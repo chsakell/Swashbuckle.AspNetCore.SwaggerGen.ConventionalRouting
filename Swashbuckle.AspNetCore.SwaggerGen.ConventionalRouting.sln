@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59DFD87D-EBBF-442A-83DC-A98DC2AF3041}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{F22E5B53-3F01-4406-BA8E-2558382F385E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6F0DA4E8-5FE7-494C-B406-42319CFC11EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting", "Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting\Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.csproj", "{5D0437A8-1A45-46CD-AB6C-163BD7248864}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetStore.API", "PetStore.API\PetStore.API.csproj", "{B3C3C495-97F6-4B47-8066-948FCC0A0863}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D0437A8-1A45-46CD-AB6C-163BD7248864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D0437A8-1A45-46CD-AB6C-163BD7248864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D0437A8-1A45-46CD-AB6C-163BD7248864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D0437A8-1A45-46CD-AB6C-163BD7248864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3C3C495-97F6-4B47-8066-948FCC0A0863}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3C3C495-97F6-4B47-8066-948FCC0A0863}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3C3C495-97F6-4B47-8066-948FCC0A0863}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3C3C495-97F6-4B47-8066-948FCC0A0863}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5D0437A8-1A45-46CD-AB6C-163BD7248864} = {59DFD87D-EBBF-442A-83DC-A98DC2AF3041}
+		{B3C3C495-97F6-4B47-8066-948FCC0A0863} = {F22E5B53-3F01-4406-BA8E-2558382F385E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {11F2969C-578D-4FB2-A89C-B109F7310212}
+	EndGlobalSection
+EndGlobal
