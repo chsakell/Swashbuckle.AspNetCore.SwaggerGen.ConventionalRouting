@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Models;
@@ -38,6 +39,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
                         if (MatchConfig.Match(routeMatchConfig, actionMatchConfig))
                         {
+                            var paramIndex = 0;
                             foreach (var segment in route.ParsedTemplate.Segments)
                             {
                                 var firstPart = segment.Parts.First();
@@ -87,9 +89,28 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
                                     template += $"{actionMatchConfig.Action}/";
                                 }
-                                else if(firstPart.IsParameter)
+                                else if (firstPart.IsParameter)
                                 {
-                                    if (HasActionDescriptorParameter(actionDescriptor, firstPart.Name))
+                                    var hasActionDescParameter =
+                                        HasActionDescriptorParameter(actionDescriptor, firstPart.Name);
+
+                                    if (hasActionDescParameter && hasInlineConstraints)
+                                    {
+                                        var parameterInfo = actionDescriptor.Parameters.First(param =>
+                                            param.Name.Equals(firstPart.Name,
+                                                StringComparison.InvariantCultureIgnoreCase));
+
+                                        passConstraint =
+                                            PassConstraint(parameterInfo, routeConstraint);
+
+                                        if (!passConstraint)
+                                        {
+                                            template = null;
+                                            break;
+                                        }
+                                    }
+
+                                    if (hasActionDescParameter)
                                     {
                                         template += $"{{{firstPart.Name}{(firstPart.IsOptional ? "?" : string.Empty)}}}/";
                                     }
@@ -98,8 +119,23 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                         template = null;
                                         break;
                                     }
+                                    else if (actionDescriptor.Parameters.Count > 0)
+                                    {
+                                        var httpMethod = actionDescriptor.ActionConstraints
+                                            .FirstOrDefault(c => c.GetType() == typeof(HttpMethodActionConstraint));
+
+                                        if (httpMethod != null &&
+                                            ((HttpMethodActionConstraint) httpMethod).HttpMethods.Count() == 1 &&
+                                            ((HttpMethodActionConstraint) httpMethod).HttpMethods.First().Equals("GET"))
+                                        {
+                                            template = null;
+                                            break;
+                                        }
+                                    }
+
+                                    paramIndex++;
                                 }
-                                
+
                             }
                         }
 
@@ -137,13 +173,28 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             return isValid;
         }
 
+        private bool PassConstraint(ParameterDescriptor parameter, IRouteConstraint constraint)
+        {
+            var isValid = false;
+
+            if (constraint is OptionalRouteConstraint optionalRouteConstraint)
+            {
+                if (optionalRouteConstraint.InnerConstraint is AlphaRouteConstraint alphaRouteConstraint)
+                {
+                    isValid = parameter.ParameterType == typeof(string);
+                }
+            }
+
+            return isValid;
+        }
+
         private string GetRouteController(Route route, out bool isParameter)
         {
             var controller = string.Empty;
 
             isParameter = route.ParsedTemplate.Parameters.Any(p => p.Name.Equals("controller"));
 
-            if(route.Defaults.TryGetValue("controller", out var controllerObj))
+            if (route.Defaults.TryGetValue("controller", out var controllerObj))
             {
                 return WithSuffix(controllerObj.ToString(), "Controller");
             }
@@ -217,7 +268,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
         }
     }
 
-    public interface  IRouteTemplateResolver
+    public interface IRouteTemplateResolver
     {
         string ResolveRouteTemplate(ActionDescriptor actionDescriptor);
     }

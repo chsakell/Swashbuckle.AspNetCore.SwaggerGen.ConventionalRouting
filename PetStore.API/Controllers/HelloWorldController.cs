@@ -6,9 +6,9 @@ namespace PetStore.API.Controllers
     public class HelloWorldController : Controller
     {
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index([FromRoute] string message)
         {
-            return Ok("Hello World!");
+            return Ok(message ?? "Hello World!");
         }
 
         [HttpGet]
@@ -21,9 +21,15 @@ namespace PetStore.API.Controllers
     public class HelloFriendController : Controller
     {
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index([FromRoute] string message)
         {
-            return Ok("Hello Friend!");
+            return Ok(message ?? "Hello Friend!");
+        }
+
+        [HttpGet]
+        public IActionResult About([FromRoute] string id)
+        {
+            return Ok($"Hello Friend! {id}");
         }
 
         [HttpGet]

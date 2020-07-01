@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting;
 
 namespace PetStore.API
@@ -70,34 +64,40 @@ namespace PetStore.API
 
             app.UseMvc(router =>
             {
-                router.MapRoute("pet-delete", "/pet/{petId}", defaults: new
+                router.MapRoute("pet-delete", "/mypet/{petId}", defaults: new
                 {
-                    controller = "MyPetApiController",
+                    controller = "MyPetApi",
                     action = "DeletePet"
                 });
 
-                router.MapRoute("pet-getbyid", "/pet/{petId}", defaults: new
+                router.MapRoute("pet-getbyid", "/mypet/{petId}", defaults: new
                 {
-                    controller = "MyPetApiController",
+                    controller = "MyPetApi",
                     action = "GetPetById"
                 });
 
-                router.MapRoute("pet-find-by-status", "/pet/findByStatus", defaults: new
+                router.MapRoute("pet-find-by-status", "/mypet/findByStatus", defaults: new
                 {
-                    controller = "MyPetApiController",
+                    controller = "MyPetApi",
                     action = "FindPetsByStatus"
                 });
 
-                router.MapRoute("pet-upload-image", "/pet/{petId}/uploadImage", defaults: new
+                router.MapRoute("pet-upload-image", "/mypet/{petId}/uploadImage", defaults: new
                 {
-                    controller = "MyPetApiController",
+                    controller = "MyPetApi",
                     action = "UploadFile"
+                });
+
+                router.MapRoute("pet-find-by-tags", "/mypet/findByTags", defaults: new
+                {
+                    controller = "MyPetApi",
+                    action = "FindPetsByTags"
                 });
 
                 // regex test
                 router.MapRoute(
                     name: "hello-world-regex",
-                    template: "message/{controller:regex(^H.*)=HelloWorld}/{action:regex(^Index$|^About$)=Index}/{id?}");
+                    template: "message/{controller:regex(^H.*)=HelloWorld}/{action:regex(^Index$|^About$)=Index}/{message:alpha?}");
 
                 router.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 ConventionalRoutingSwaggerGenMiddleware.UseRoutes(router.Routes.ToList());
