@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Primitives;
 
@@ -149,6 +151,14 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                 {
                     if (actionDescriptor.AttributeRouteInfo == null)
                     {
+                        if (actionDescriptor.ActionConstraints == null)
+                        {
+                            // check from config for default HTTP method
+                            actionDescriptor.ActionConstraints = new List<IActionConstraintMetadata>
+                            {
+                                new HttpMethodActionConstraint(new[] {"GET"})
+                            };
+                        }
                         var routeTemplate = _routeTemplateResolver.ResolveRouteTemplate(actionDescriptor);
                         if (!string.IsNullOrEmpty(routeTemplate))
                         {
@@ -157,15 +167,6 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                 Template = routeTemplate
                             };
                         }
-
-                        //actionDescriptor.AttributeRouteInfo = new AttributeRouteInfo
-                        //{
-                        //    Template = $"weatherforecast/{(actionDescriptor.DisplayName.Contains("Get") ? "get" : "post")}"
-                        //};
-                        //if (actionDescriptor.DisplayName.Contains("Test"))
-                        //{
-                        //    actionDescriptor.AttributeRouteInfo.Template = "helloworld";
-                        //}
                     }
                 }
 

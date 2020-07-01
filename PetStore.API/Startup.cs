@@ -72,9 +72,32 @@ namespace PetStore.API
             {
                 router.MapRoute("pet-delete", "/pet/{petId}", defaults: new
                 {
-                    controller = "MyApiController",
+                    controller = "MyPetApiController",
                     action = "DeletePet"
                 });
+
+                router.MapRoute("pet-getbyid", "/pet/{petId}", defaults: new
+                {
+                    controller = "MyPetApiController",
+                    action = "GetPetById"
+                });
+
+                router.MapRoute("pet-find-by-status", "/pet/findByStatus", defaults: new
+                {
+                    controller = "MyPetApiController",
+                    action = "FindPetsByStatus"
+                });
+
+                router.MapRoute("pet-upload-image", "/pet/{petId}/uploadImage", defaults: new
+                {
+                    controller = "MyPetApiController",
+                    action = "UploadFile"
+                });
+
+                // regex test
+                router.MapRoute(
+                    name: "hello-world-regex",
+                    template: "message/{controller:regex(^H.*)=HelloWorld}/{action:regex(^Index$|^About$)=Index}/{id?}");
 
                 router.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 ConventionalRoutingSwaggerGenMiddleware.UseRoutes(router.Routes.ToList());

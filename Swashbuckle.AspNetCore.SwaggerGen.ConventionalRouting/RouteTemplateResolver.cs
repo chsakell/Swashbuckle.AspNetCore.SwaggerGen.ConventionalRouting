@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Models;
 
 namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
@@ -42,12 +41,50 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                             foreach (var segment in route.ParsedTemplate.Segments)
                             {
                                 var firstPart = segment.Parts.First();
-                                if (firstPart.Name.Equals("controller"))
+                                var hasInlineConstraints = firstPart.InlineConstraints != null &&
+                                                           firstPart.InlineConstraints.Any();
+
+                                IRouteConstraint routeConstraint = null;
+                                bool passConstraint = false;
+                                if (hasInlineConstraints)
                                 {
+                                    routeConstraint = route.Constraints[firstPart.Name];
+                                }
+
+                                if (firstPart.IsLiteral)
+                                {
+                                    template += $"{firstPart.Text}/";
+                                }
+                                else if (firstPart.Name.Equals("controller"))
+                                {
+                                    if (hasInlineConstraints)
+                                    {
+                                        passConstraint =
+                                            PassConstraint(actionMatchConfig.Controller, routeConstraint);
+
+                                        if (!passConstraint)
+                                        {
+                                            template = null;
+                                            break;
+                                        }
+                                    }
+
                                     template += $"{WithNoSuffix(actionMatchConfig.Controller, "Controller")}/";
                                 }
                                 else if (firstPart.Name.Equals("action"))
                                 {
+                                    if (hasInlineConstraints)
+                                    {
+                                        passConstraint =
+                                            PassConstraint(actionMatchConfig.Action, routeConstraint);
+
+                                        if (!passConstraint)
+                                        {
+                                            template = null;
+                                            break;
+                                        }
+                                    }
+
                                     template += $"{actionMatchConfig.Action}/";
                                 }
                                 else if(firstPart.IsParameter)
@@ -66,6 +103,11 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                             }
                         }
 
+                        // exit on first route match
+                        if (!string.IsNullOrEmpty(template))
+                        {
+                            break;
+                        }
                     }
                 }
             }
@@ -78,13 +120,21 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             return template;
         }
 
-        private bool ControllersActionsMatch(List<Dictionary<string, string>> routeValues)
+        private bool PassConstraint(string term, IRouteConstraint constraint)
         {
-            var match = false;
+            var isValid = false;
 
-            
+            if (string.IsNullOrEmpty(term) || constraint == null)
+            {
+                return false; // something is wrong here..?
+            }
 
-            return match;
+            if (constraint is RegexInlineRouteConstraint regexInlineRouteConstraint)
+            {
+                isValid = regexInlineRouteConstraint.Constraint.Match(term).Success;
+            }
+
+            return isValid;
         }
 
         private string GetRouteController(Route route, out bool isParameter)
