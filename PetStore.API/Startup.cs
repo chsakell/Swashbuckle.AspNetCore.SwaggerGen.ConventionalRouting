@@ -70,6 +70,12 @@ namespace PetStore.API
 
             app.UseMvc(router =>
             {
+                router.MapRoute("pet-delete", "/pet/{petId}", defaults: new
+                {
+                    controller = "MyApiController",
+                    action = "DeletePet"
+                });
+
                 router.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 ConventionalRoutingSwaggerGenMiddleware.UseRoutes(router.Routes.ToList());
             });
