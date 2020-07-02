@@ -15,5 +15,11 @@ namespace PetStore.API.Controllers
         {
             return Ok($"sport: {sport} liveOnly: {liveOnly}");
         }
+
+        [HttpGet]
+        public IActionResult GetEvents([FromQuery(Name = "event_ids")] string eventIds)
+        {
+            return Ok($"events: {eventIds}");
+        }
     }
 }

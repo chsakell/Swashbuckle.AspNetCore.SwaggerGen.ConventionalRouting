@@ -118,6 +118,12 @@ namespace PetStore.API
                     sport = new GenericMatchRouteConstraint(new[] { "football", "volley" })
                 });
 
+                router.MapRoute("sport-get-events", "sport/events/{eventIds}", new
+                {
+                    controller = "Sport",
+                    action = "GetEvents"
+                });
+
                 router.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 ConventionalRoutingSwaggerGen.UseRoutes(router.Routes.ToList());
             });

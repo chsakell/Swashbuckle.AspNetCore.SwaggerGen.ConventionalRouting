@@ -105,7 +105,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                         passConstraint =
                                             PassConstraint(parameterInfo, routeConstraint);
 
-                                        if (!passConstraint)
+                                        if (!passConstraint && parameterInfo.BindingInfo?.BindingSource.Id != "Query")
                                         {
                                             template = null;
                                             break;
