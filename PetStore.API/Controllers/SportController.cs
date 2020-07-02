@@ -9,5 +9,11 @@ namespace PetStore.API.Controllers
         {
             return Ok($"Event {eventId}");
         }
+
+        [HttpGet]
+        public IActionResult UpcomingEvents(string sport, bool? liveOnly)
+        {
+            return Ok($"sport: {sport} liveOnly: {liveOnly}");
+        }
     }
 }

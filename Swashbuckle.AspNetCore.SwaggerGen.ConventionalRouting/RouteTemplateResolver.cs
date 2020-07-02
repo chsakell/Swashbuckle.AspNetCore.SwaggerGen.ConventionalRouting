@@ -40,6 +40,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                         if (MatchConfig.Match(routeMatchConfig, actionMatchConfig))
                         {
                             var paramIndex = 0;
+                            var actionParametersUsed = new List<string>();
                             foreach (var segment in route.ParsedTemplate.Segments)
                             {
                                 var firstPart = segment.Parts.First();
@@ -113,6 +114,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
                                     if (hasActionDescParameter)
                                     {
+                                        actionParametersUsed.Add(firstPart.Name);
                                         template += $"{{{firstPart.Name}{(firstPart.IsOptional ? "?" : string.Empty)}}}/";
                                     }
                                     else if (!firstPart.IsOptional)
@@ -137,6 +139,15 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                             ((HttpMethodActionConstraint) httpMethod).HttpMethods.Count() == 1 &&
                                             ((HttpMethodActionConstraint) httpMethod).HttpMethods.First().Equals("GET"))
                                         {
+                                            var unusedParameters = actionDescriptor.Parameters.Where(param =>
+                                                !actionParametersUsed.Contains(param.Name));
+
+                                            if (!string.IsNullOrEmpty(template) &&
+                                                unusedParameters.All(param => param.BindingInfo == null))
+                                            {
+                                                break;
+                                            }
+
                                             template = null;
                                             break;
                                         }
