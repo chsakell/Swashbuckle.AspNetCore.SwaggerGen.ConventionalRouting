@@ -25,21 +25,7 @@ namespace PetStore.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            var descriptor_1 =
-                new ServiceDescriptor(
-                    typeof(IApiDescriptionProvider),
-                    typeof(ConventionalRoutingApiDescriptionProvider),
-                    ServiceLifetime.Transient);
-
-            var descriptor_3 =
-                new ServiceDescriptor(
-                    typeof(IActionDescriptorCollectionProvider),
-                    typeof(ConventionalRoutingActionDescriptorCollectionProvider),
-                    ServiceLifetime.Transient);
-
-            services.Replace(descriptor_1);
-            services.Replace(descriptor_3);
-            services.AddSingleton<IRouteTemplateResolver, RouteTemplateResolver>();
+            services.AddSwaggerGenWithConventionalRoutes();
 
             services.AddSwaggerGen();
         }
@@ -100,7 +86,7 @@ namespace PetStore.API
                     template: "message/{controller:regex(^H.*)=HelloWorld}/{action:regex(^Index$|^About$)=Index}/{message:alpha?}");
 
                 router.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                ConventionalRoutingSwaggerGenMiddleware.UseRoutes(router.Routes.ToList());
+                ConventionalRoutingSwaggerGen.UseRoutes(router.Routes.ToList());
             });
         }
     }

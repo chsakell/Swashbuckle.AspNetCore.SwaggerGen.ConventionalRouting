@@ -13,7 +13,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
     {
         public string ResolveRouteTemplate(ActionDescriptor actionDescriptor)
         {
-            var routes = ConventionalRoutingSwaggerGenMiddleware.ROUTES;
+            var routes = ConventionalRoutingSwaggerGen.ROUTES;
             var template = string.Empty;
 
             if (routes != null)
