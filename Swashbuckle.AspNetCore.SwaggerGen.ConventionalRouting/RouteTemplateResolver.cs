@@ -43,12 +43,13 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                             foreach (var segment in route.ParsedTemplate.Segments)
                             {
                                 var firstPart = segment.Parts.First();
-                                var hasInlineConstraints = firstPart.InlineConstraints != null &&
-                                                           firstPart.InlineConstraints.Any();
+
+                                var hasConstraint = route.Constraints != null &&
+                                                           route.Constraints.Any(c => c.Key.Equals(firstPart.Name));
 
                                 IRouteConstraint routeConstraint = null;
                                 bool passConstraint = false;
-                                if (hasInlineConstraints)
+                                if (hasConstraint)
                                 {
                                     routeConstraint = route.Constraints[firstPart.Name];
                                 }
@@ -59,7 +60,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                 }
                                 else if (firstPart.Name.Equals("controller"))
                                 {
-                                    if (hasInlineConstraints)
+                                    if (hasConstraint)
                                     {
                                         passConstraint =
                                             PassConstraint(actionMatchConfig.Controller, routeConstraint);
@@ -75,7 +76,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                 }
                                 else if (firstPart.Name.Equals("action"))
                                 {
-                                    if (hasInlineConstraints)
+                                    if (hasConstraint)
                                     {
                                         passConstraint =
                                             PassConstraint(actionMatchConfig.Action, routeConstraint);
@@ -94,7 +95,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                     var hasActionDescParameter =
                                         HasActionDescriptorParameter(actionDescriptor, firstPart.Name);
 
-                                    if (hasActionDescParameter && hasInlineConstraints)
+                                    if (hasActionDescParameter && hasConstraint)
                                     {
                                         var parameterInfo = actionDescriptor.Parameters.First(param =>
                                             param.Name.Equals(firstPart.Name,
@@ -116,8 +117,16 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                     }
                                     else if (!firstPart.IsOptional)
                                     {
-                                        template = null;
-                                        break;
+                                        if (hasConstraint && IsCustomConstraint(routeConstraint) ||
+                                            route.ParsedTemplate.Parameters.IndexOf(firstPart) != route.ParsedTemplate.Parameters.Count -1)
+                                        {
+                                            template += $"{{{firstPart.Name}}}/";
+                                        }
+                                        else
+                                        {
+                                            template = null;
+                                            break;
+                                        }
                                     }
                                     else if (actionDescriptor.Parameters.Count > 0)
                                     {
@@ -150,7 +159,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
             if (!string.IsNullOrEmpty(template))
             {
-                template = template.TrimEnd('/').ToLower();
+                template = template.TrimEnd('/');
             }
 
             return template;
@@ -232,6 +241,22 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             
 
             return isValid;
+        }
+
+        private bool IsCustomConstraint(IRouteConstraint constraint)
+        {
+            bool isCustomConstraint = !(constraint is OptionalRouteConstraint ||
+                                        constraint is IntRouteConstraint ||
+                                        constraint is BoolRouteConstraint ||
+                                        constraint is DateTimeRouteConstraint ||
+                                        constraint is DecimalRouteConstraint ||
+                                        constraint is DoubleRouteConstraint ||
+                                        constraint is FloatRouteConstraint ||
+                                        constraint is GuidRouteConstraint ||
+                                        constraint is LongRouteConstraint ||
+                                        constraint is AlphaRouteConstraint);
+
+            return isCustomConstraint;
         }
 
         private string GetRouteController(Route route, out bool isParameter)
