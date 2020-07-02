@@ -37,5 +37,11 @@ namespace PetStore.API.Controllers
         {
             return Ok("Hello Friend!");
         }
+
+        [HttpGet]
+        public IActionResult Test(int id, string message)
+        {
+            return Ok($"id: {id} - message: {message}");
+        }
     }
 }

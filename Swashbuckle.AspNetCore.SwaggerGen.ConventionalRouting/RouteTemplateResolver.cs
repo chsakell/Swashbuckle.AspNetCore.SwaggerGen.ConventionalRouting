@@ -184,6 +184,14 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                     isValid = parameter.ParameterType == typeof(string);
                 }
             }
+            else if (constraint is AlphaRouteConstraint alphaRouteConstraint)
+            {
+                isValid = parameter.ParameterType == typeof(string);
+            }
+            else if (constraint is IntRouteConstraint intRouteConstraint)
+            {
+                isValid = parameter.ParameterType == typeof(int);
+            }
 
             return isValid;
         }

@@ -85,6 +85,12 @@ namespace PetStore.API
                     name: "hello-world-regex",
                     template: "message/{controller:regex(^H.*)=HelloWorld}/{action:regex(^Index$|^About$)=Index}/{message:alpha?}");
 
+                router.MapRoute("hello-friend-test", "/test/{id:int}/friend/{message:alpha}", defaults: new
+                {
+                    controller = "HelloFriend",
+                    action = "Test"
+                });
+
                 router.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 ConventionalRoutingSwaggerGen.UseRoutes(router.Routes.ToList());
             });
