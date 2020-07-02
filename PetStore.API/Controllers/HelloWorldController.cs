@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PetStore.API.Controllers
 {
@@ -42,6 +43,18 @@ namespace PetStore.API.Controllers
         public IActionResult Test(int id, string message)
         {
             return Ok($"id: {id} - message: {message}");
+        }
+
+        [HttpGet]
+        public IActionResult Test2(DateTime date, string message)
+        {
+            return Ok($"date: {date} - message: {message}");
+        }
+
+        [HttpGet]
+        public IActionResult Test3(decimal num1, long num2, Guid token)
+        {
+            return Ok($"num1: {num1} - num2: {num2} token: {token}");
         }
     }
 }

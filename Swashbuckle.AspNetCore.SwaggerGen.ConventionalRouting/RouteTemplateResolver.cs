@@ -179,19 +179,57 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
             if (constraint is OptionalRouteConstraint optionalRouteConstraint)
             {
-                if (optionalRouteConstraint.InnerConstraint is AlphaRouteConstraint alphaRouteConstraint)
-                {
-                    isValid = parameter.ParameterType == typeof(string);
-                }
+                isValid = IsValidRouteConstraint(parameter, optionalRouteConstraint.InnerConstraint);
+            }
+            else
+            {
+                isValid = IsValidRouteConstraint(parameter, constraint);
+            }
+
+            return isValid;
+        }
+
+        private bool IsValidRouteConstraint(ParameterDescriptor parameter, IRouteConstraint constraint)
+        {
+            var isValid = false;
+
+            if (constraint is IntRouteConstraint intRouteConstraint)
+            {
+                isValid = parameter.ParameterType == typeof(int);
+            }
+            if (constraint is BoolRouteConstraint boolRouteConstraint)
+            {
+                isValid = parameter.ParameterType == typeof(bool);
+            }
+            else if (constraint is DateTimeRouteConstraint dateTimeRouteConstraint)
+            {
+                isValid = parameter.ParameterType == typeof(DateTime);
+            }
+            else if (constraint is DecimalRouteConstraint decimalRouteConstraint)
+            {
+                isValid = parameter.ParameterType == typeof(decimal);
+            }
+            else if (constraint is DoubleRouteConstraint doubleRouteConstraint)
+            {
+                isValid = parameter.ParameterType == typeof(double);
+            }
+            else if (constraint is FloatRouteConstraint floatRouteConstraint)
+            {
+                isValid = parameter.ParameterType == typeof(float);
+            }
+            else if (constraint is GuidRouteConstraint guidRouteConstraint)
+            {
+                isValid = parameter.ParameterType == typeof(Guid);
+            }
+            else if (constraint is LongRouteConstraint longRouteConstraint)
+            {
+                isValid = parameter.ParameterType == typeof(long);
             }
             else if (constraint is AlphaRouteConstraint alphaRouteConstraint)
             {
                 isValid = parameter.ParameterType == typeof(string);
             }
-            else if (constraint is IntRouteConstraint intRouteConstraint)
-            {
-                isValid = parameter.ParameterType == typeof(int);
-            }
+            
 
             return isValid;
         }

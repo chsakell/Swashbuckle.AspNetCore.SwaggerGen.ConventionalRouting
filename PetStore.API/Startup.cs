@@ -91,6 +91,19 @@ namespace PetStore.API
                     action = "Test"
                 });
 
+                router.MapRoute("hello-friend-test-date", "/test/{date:datetime}/friend/{message:alpha}", defaults: new
+                {
+                    controller = "HelloFriend",
+                    action = "Test2"
+                });
+
+                router.MapRoute("hello-friend-test3", "/test/{num1:decimal}/friend/{num2:long}/{token:guid}", defaults: new
+                {
+                    controller = "HelloFriend",
+                    action = "Test3"
+                });
+
+
                 router.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 ConventionalRoutingSwaggerGen.UseRoutes(router.Routes.ToList());
             });
