@@ -60,7 +60,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                 }
                                 else if (firstPart.Name.Equals("controller"))
                                 {
-                                    if (hasConstraint)
+                                    if (hasConstraint && !IsCustomConstraint(routeConstraint))
                                     {
                                         passConstraint =
                                             PassConstraint(actionMatchConfig.Controller, routeConstraint);
