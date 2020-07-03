@@ -10,6 +10,8 @@ Swagger generator extension for conventional based routes support.
     Package Manager : Install-Package Swashbuckle.AspNetCore -Version 2.2.1
     CLI : dotnet add package --version 5.5.0 Swashbuckle.AspNetCore
     ```
+> The extension has a dependency on the [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore) so you don't have to install it twice.
+
 
 2. In the `ConfigureServices` method of `Startup.cs`, register the [default](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerGen) Swagger generator and then add the Conventional Routing Swagger generator.
     ```csharp
@@ -44,7 +46,10 @@ Swagger generator extension for conventional based routes support.
      });
     ```
     
-    ## Attribute based routes ##
+## Attribute based routes ##
     
-    Attribute based routes will continue to work as used to.
+Attribute based routes will continue to work as used to.
+    
+## License ##
+Code released under the <a href="https://github.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting/blob/master/LICENSE" target="_blank"> MIT license</a>.
     
