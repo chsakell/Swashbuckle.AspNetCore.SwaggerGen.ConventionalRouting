@@ -13,7 +13,7 @@ Swagger generator extension for conventional based routes support.
 > The extension has a dependency on the [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore) so you don't have to install it twice.
 
 
-2. In the `ConfigureServices` method of `Startup.cs`, register the [default](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerGen) Swagger generator and then add the Conventional Routing Swagger generator.
+2. In the `ConfigureServices` method of `Startup.cs`, register the [default](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerGen) Swagger generator and then the Conventional Routing Swagger generator.
     ```csharp
     using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting;
     ```
@@ -26,7 +26,7 @@ Swagger generator extension for conventional based routes support.
     services.AddSwaggerGenWithConventionalRoutes();
     ```
     
- 3. In the `Configure` method of `Startup.cs`, after registering all your conventional routes, pass them as the argument to the Conventional Routing generator.
+ 3. In the `Configure` method of `Startup.cs`, after registering all your conventional routes, pass them as an argument to the Conventional Routing generator.
     
     ```csharp
     app.UseMvc(router =>
@@ -63,7 +63,7 @@ Currently `2.2.X` versions support only ASP.NET Core 2.2 applications, but suppo
 ## Notes ##
     
 * Attribute based routes will continue to work as used to
-* The generator tries to match each controller action method to a registered route. It case multiple routes meet the action's descriptor then the first route wins
+* The generator tries to match each controller action method to a registered route. It case multiple routes meet the action's descriptor definition, then the first route wins
 * Controller action methods are not required to have an `HTTP` method attribute. In case an action doesn't have an HTTP method attribute applied, the generator will assume it's a GET request
 
 ## Roadmap ##
