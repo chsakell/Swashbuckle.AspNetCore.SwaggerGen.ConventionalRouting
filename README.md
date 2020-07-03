@@ -58,6 +58,7 @@ Currently `2.2.X` versions support only ASP.NET Core 2.2 applications, but suppo
 ## Notes ##
     
 * Attribute based routes will continue to work as used to
+* The generator tries to match each controller action method to a registered route. It case multiple routes meet the action's descriptor then the first route wins
 * Controller action methods are not required to have an `HTTP` method attribute. In case an action doesn't have an HTTP method attribute applied, the generator will assume it's a GET request
 
 ## Contribution ##
