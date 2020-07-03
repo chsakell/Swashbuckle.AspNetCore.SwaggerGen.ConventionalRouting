@@ -42,6 +42,11 @@ Swagger generator extension for conventional based routes support.
           controller = "MyPetApi",
           action = "GetPetById"
       });
+      
+      // routes with common or custom constraints will work
+      router.MapRoute(name: "hello-world-regex",
+           template: "message/{controller:regex(^H.*)=HelloWorld}/{action:regex(^Index$|^About$)=Index}/{message:alpha?}");
+           
       // more routes..
     
        ConventionalRoutingSwaggerGen.UseRoutes(router.Routes.ToList());
