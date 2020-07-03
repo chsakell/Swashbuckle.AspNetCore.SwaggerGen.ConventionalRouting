@@ -9,9 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{F22E5B53-3F0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6F0DA4E8-5FE7-494C-B406-42319CFC11EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting", "Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting\Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.csproj", "{5D0437A8-1A45-46CD-AB6C-163BD7248864}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting", "Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting\Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.csproj", "{5D0437A8-1A45-46CD-AB6C-163BD7248864}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetStore.API", "PetStore.API\PetStore.API.csproj", "{B3C3C495-97F6-4B47-8066-948FCC0A0863}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.API", "Web.API\Web.API.csproj", "{B3C3C495-97F6-4B47-8066-948FCC0A0863}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
