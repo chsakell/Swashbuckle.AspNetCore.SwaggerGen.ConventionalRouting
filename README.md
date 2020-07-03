@@ -7,8 +7,8 @@ Swagger generator extension for conventional based routes support.
 1. Install the standard Nuget package into your ASP.NET Core application.
 
     ```
-    Package Manager : Install-Package Swashbuckle.AspNetCore -Version 2.2.1
-    CLI : dotnet add package --version 5.5.0 Swashbuckle.AspNetCore
+    Package Manager : Install-Package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting -Version 2.2.1.1
+    CLI : dotnet add package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting --version 2.2.1.1
     ```
 > The extension has a dependency on the [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore) so you don't have to install it twice.
 
@@ -21,6 +21,8 @@ Swagger generator extension for conventional based routes support.
     ```csharp
     services.AddMvc();
     services.AddSwaggerGen();
+    
+    // this will handle all conventional based routes
     services.AddSwaggerGenWithConventionalRoutes();
     ```
     
@@ -47,11 +49,12 @@ Swagger generator extension for conventional based routes support.
     ```
 ## Compatibility ##
 
-Currently `2.2.X` versions support only ASP.NET Core 2.2 applications, but will add support for ASP.NET Core 3.X as well
+Currently `2.2.X` versions support only ASP.NET Core 2.2 applications, but support will be added for ASP.NET Core 3.X as well
 
-## Attribute based routes ##
+## Notes ##
     
-Attribute based routes will continue to work as used to.
+* Attribute based routes will continue to work as used to
+* Conroller action methods are not required to have an `HTTP` method attribute. In case an action doesn't have an HTTP method attribute applied, the generator will assume it's a GET request
     
 ## License ##
 Code released under the <a href="https://github.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting/blob/master/LICENSE" target="_blank"> MIT license</a>.
