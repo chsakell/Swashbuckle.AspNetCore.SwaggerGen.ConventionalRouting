@@ -45,7 +45,10 @@ Swagger generator extension for conventional based routes support.
        ConventionalRoutingSwaggerGen.UseRoutes(router.Routes.ToList());
      });
     ```
-    
+## Compatibility ##
+
+Currently `2.2.X` versions support only ASP.NET Core 2.2 applications, but will add support for ASP.NET Core 3.X as well
+
 ## Attribute based routes ##
     
 Attribute based routes will continue to work as used to.
