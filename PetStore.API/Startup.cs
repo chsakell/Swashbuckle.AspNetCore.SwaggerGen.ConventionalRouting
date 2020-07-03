@@ -114,6 +114,12 @@ namespace PetStore.API
                     action = "GetEvents"
                 });
 
+                router.MapRoute("sport-live-events", "livesports", new
+                {
+                    controller = "Sport",
+                    action = "Live"
+                });
+
                 router.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 ConventionalRoutingSwaggerGen.UseRoutes(router.Routes.ToList());
             });

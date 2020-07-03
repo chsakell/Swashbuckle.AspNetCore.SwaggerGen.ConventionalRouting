@@ -21,5 +21,11 @@ namespace PetStore.API.Controllers
         {
             return Ok($"events: {eventIds}");
         }
+
+        [HttpGet]
+        public IActionResult Live()
+        {
+            return Ok($"Live sports");
+        }
     }
 }
