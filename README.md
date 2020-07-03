@@ -49,7 +49,11 @@ Swagger generator extension for conventional based routes support.
     ```
 ## Compatibility ##
 
-Currently `2.2.X` versions support only ASP.NET Core 2.2 applications, but support will be added for ASP.NET Core 3.X as well
+Currently `2.2.X` versions support only ASP.NET Core 2.2 applications, but support will be added for ASP.NET Core 3.X as well.
+
+|Generator Version|ASP.NET Core|Original dependency|
+|----------|----------|----------|
+|2.2.1.1|2.2|5.5.1|
 
 ## Notes ##
     
