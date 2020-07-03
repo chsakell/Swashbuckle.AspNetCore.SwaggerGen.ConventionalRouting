@@ -61,10 +61,15 @@ Currently `2.2.X` versions support only ASP.NET Core 2.2 applications, but suppo
 * The generator tries to match each controller action method to a registered route. It case multiple routes meet the action's descriptor then the first route wins
 * Controller action methods are not required to have an `HTTP` method attribute. In case an action doesn't have an HTTP method attribute applied, the generator will assume it's a GET request
 
+## Roadmap ##
+
+* Add support for ASP.NET Core 3 applications
+* Add configuration to change the generator's behavior
+* Add unit tests
+
 ## Contribution ##
 
 You are free to contribute by either improving the quality of the generator or opening an issue for a bug or feature request
     
 ## License ##
-Code released under the <a href="https://github.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting/blob/master/LICENSE" target="_blank"> MIT license</a>.
-    
+Code released under the <a href="https://github.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting/blob/master/LICENSE" target="_blank"> MIT license</a>
