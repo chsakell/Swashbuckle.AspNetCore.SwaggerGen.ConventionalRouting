@@ -54,7 +54,7 @@ Currently `2.2.X` versions support only ASP.NET Core 2.2 applications, but suppo
 ## Notes ##
     
 * Attribute based routes will continue to work as used to
-* Conroller action methods are not required to have an `HTTP` method attribute. In case an action doesn't have an HTTP method attribute applied, the generator will assume it's a GET request
+* Controller action methods are not required to have an `HTTP` method attribute. In case an action doesn't have an HTTP method attribute applied, the generator will assume it's a GET request
     
 ## License ##
 Code released under the <a href="https://github.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting/blob/master/LICENSE" target="_blank"> MIT license</a>.
