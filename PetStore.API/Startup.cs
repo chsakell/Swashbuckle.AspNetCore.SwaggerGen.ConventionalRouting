@@ -2,12 +2,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting;
 
 namespace PetStore.API
@@ -24,16 +20,10 @@ namespace PetStore.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.Configure<RouteOptions>(options =>
-            //{
-            //    options.ConstraintMap.Add("");
-            //})
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddSwaggerGenWithConventionalRoutes();
-
             services.AddSwaggerGen();
+            services.AddSwaggerGenWithConventionalRoutes();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

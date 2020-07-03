@@ -12,7 +12,13 @@ using Microsoft.Extensions.Primitives;
 
 namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 {
-    public class ConventionalRoutingActionDescriptorCollectionProvider : ActionDescriptorCollectionProvider
+    public interface IConventionalRoutingActionDescriptorCollectionProvider : 
+        IActionDescriptorCollectionProvider
+    {
+
+    }
+    
+    public class ConventionalRoutingActionDescriptorCollectionProvider : ActionDescriptorCollectionProvider, IConventionalRoutingActionDescriptorCollectionProvider
     {
         private readonly IRouteTemplateResolver _routeTemplateResolver;
         private readonly IActionDescriptorProvider[] _actionDescriptorProviders;

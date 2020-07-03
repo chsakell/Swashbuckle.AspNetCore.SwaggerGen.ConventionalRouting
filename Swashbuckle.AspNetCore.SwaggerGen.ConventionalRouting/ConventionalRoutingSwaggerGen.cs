@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 {
@@ -14,22 +13,23 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
         public static IServiceCollection AddSwaggerGenWithConventionalRoutes(
             this IServiceCollection services)
         {
-            var apiDescriptionProviderDescriptor =
-                new ServiceDescriptor(
-                    typeof(IApiDescriptionProvider),
-                    typeof(ConventionalRoutingApiDescriptionProvider),
-                    ServiceLifetime.Transient);
-
-            var actionDescriptorCollectionProviderDescriptor =
-                new ServiceDescriptor(
-                    typeof(IActionDescriptorCollectionProvider),
-                    typeof(ConventionalRoutingActionDescriptorCollectionProvider),
-                    ServiceLifetime.Transient);
-
-            services.Replace(apiDescriptionProviderDescriptor);
-            services.Replace(actionDescriptorCollectionProviderDescriptor);
-
             services.AddSingleton<IRouteTemplateResolver, RouteTemplateResolver>();
+            services.AddSingleton<IConventionalRoutingSwaggerProvider, ConventionalRoutingSwaggerGenerator>();
+            services.AddSingleton<IConventionalRoutingApiDescriptionGroupCollectionProvider,
+                ConventionalRoutingApiDescriptionGroupCollectionProvider>();
+            services
+                .AddSingleton<IConventionalRoutingApiDescriptionProvider, ConventionalRoutingApiDescriptionProvider>();
+            services
+                .AddSingleton<IConventionalRoutingActionDescriptorCollectionProvider,
+                    ConventionalRoutingActionDescriptorCollectionProvider>();
+
+            var swaggerDescriptionProviderDescriptor =
+                new ServiceDescriptor(
+                    typeof(ISwaggerProvider),
+                    typeof(ConventionalRoutingSwaggerGenerator),
+                    ServiceLifetime.Singleton);
+
+            services.Replace(swaggerDescriptionProviderDescriptor);
 
             return services;
         }

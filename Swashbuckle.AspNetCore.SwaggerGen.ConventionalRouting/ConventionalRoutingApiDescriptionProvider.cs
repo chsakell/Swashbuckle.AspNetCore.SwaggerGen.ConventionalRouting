@@ -18,7 +18,12 @@ using ParameterDefaultValues = Swashbuckle.AspNetCore.SwaggerGen.ConventionalRou
 
 namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 {
-    public class ConventionalRoutingApiDescriptionProvider : IApiDescriptionProvider
+    public interface IConventionalRoutingApiDescriptionProvider : IApiDescriptionProvider
+    {
+
+    }
+
+    public class ConventionalRoutingApiDescriptionProvider : IConventionalRoutingApiDescriptionProvider
     {
         private readonly MvcOptions _mvcOptions;
         private readonly ApiResponseTypeProvider _responseTypeProvider;
