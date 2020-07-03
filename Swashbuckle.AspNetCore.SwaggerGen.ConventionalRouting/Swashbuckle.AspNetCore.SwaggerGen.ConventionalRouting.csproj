@@ -6,6 +6,13 @@
 
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
+    <Authors>Christos Sakellarios</Authors>
+    <Company />
+    <PackageProjectUrl>Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting</RepositoryUrl>
+    <PackageTags>swagger,routing, aspnetcore</PackageTags>
+    <Product />
+    <Description>Swagger Generator extension for ASP.NET Core APIs built using conventional routing</Description>
   </PropertyGroup>
 
   <ItemGroup>
