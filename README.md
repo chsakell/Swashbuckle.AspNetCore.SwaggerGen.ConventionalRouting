@@ -7,58 +7,6 @@ Swagger generator extension for conventional based routes support.
 There are 2 versions of the package, one for ASP.NET Core 2.2 applications and another one for ASP.NET Core 3.X.
 Follow the guide you are interesting in.
 
-## ASP.NET Core 2.2 applications
-
-1. Install the standard Nuget package into your ASP.NET Core application.
-
-    ```
-    Package Manager : Install-Package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting -Version 2.2.1.1
-    CLI : dotnet add package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting --version 2.2.1.1
-    ```
-> The extension has a dependency on the [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore) so you don't have to install it twice.
-
-
-2. In the `ConfigureServices` method of `Startup.cs`, register the [default](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerGen) Swagger generator and then the Conventional Routing Swagger generator.
-    ```csharp
-    using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting;
-    ```
-    
-    ```csharp
-    services.AddMvc();
-    services.AddSwaggerGen();
-    
-    // this will handle all conventional based routes
-    services.AddSwaggerGenWithConventionalRoutes();
-    ```
-    
- 3. In the `Configure` method of `Startup.cs`, after registering all your conventional routes, pass them as an argument to the Conventional Routing generator.
-    
-    ```csharp
-    app.UseMvc(router =>
-    {
-       router.MapRoute("pet-delete", "/mypet/{petId}", defaults: new
-       {
-         controller = "MyPetApi",
-         action = "DeletePet"
-       });
-
-       router.MapRoute("pet-getbyid", "/mypet/{petId}", defaults: new
-       {
-          controller = "MyPetApi",
-          action = "GetPetById"
-      });
-      
-      // routes with common or custom constraints will work
-      router.MapRoute(name: "hello-world-regex",
-           template: "message/{controller:regex(^H.*)=HelloWorld}/{action:regex(^Index$|^About$)=Index}/{message:alpha?}");
-           
-      // more routes..
-      
-      // Pass the conventional routes to the generator
-      ConventionalRoutingSwaggerGen.UseRoutes(router.Routes.ToList());
-     });
-    ```
-
 ## ASP.NET Core 3.X applications
 
 1. Install the standard Nuget package into your ASP.NET Core application.
@@ -123,7 +71,59 @@ Follow the guide you are interesting in.
        ConventionalRoutingSwaggerGen.UseRoutes(endpoints);
      });
     ```
-   
+ 
+
+## ASP.NET Core 2.2 applications
+
+1. Install the standard Nuget package into your ASP.NET Core application.
+
+    ```
+    Package Manager : Install-Package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting -Version 2.2.1.1
+    CLI : dotnet add package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting --version 2.2.1.1
+    ```
+> The extension has a dependency on the [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore) so you don't have to install it twice.
+
+
+2. In the `ConfigureServices` method of `Startup.cs`, register the [default](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerGen) Swagger generator and then the Conventional Routing Swagger generator.
+    ```csharp
+    using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting;
+    ```
+    
+    ```csharp
+    services.AddMvc();
+    services.AddSwaggerGen();
+    
+    // this will handle all conventional based routes
+    services.AddSwaggerGenWithConventionalRoutes();
+    ```
+    
+ 3. In the `Configure` method of `Startup.cs`, after registering all your conventional routes, pass them as an argument to the Conventional Routing generator.
+    
+    ```csharp
+    app.UseMvc(router =>
+    {
+       router.MapRoute("pet-delete", "/mypet/{petId}", defaults: new
+       {
+         controller = "MyPetApi",
+         action = "DeletePet"
+       });
+
+       router.MapRoute("pet-getbyid", "/mypet/{petId}", defaults: new
+       {
+          controller = "MyPetApi",
+          action = "GetPetById"
+      });
+      
+      // routes with common or custom constraints will work
+      router.MapRoute(name: "hello-world-regex",
+           template: "message/{controller:regex(^H.*)=HelloWorld}/{action:regex(^Index$|^About$)=Index}/{message:alpha?}");
+           
+      // more routes..
+      
+      // Pass the conventional routes to the generator
+      ConventionalRoutingSwaggerGen.UseRoutes(router.Routes.ToList());
+     });
+    ```
 
 ## Compatibility ##
 
