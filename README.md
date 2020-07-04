@@ -4,8 +4,12 @@ Swagger generator extension for conventional based routes support.
 
 # Getting Started #
 
-There are 2 versions of the package, one for ASP.NET Core 2.2 applications and another one for ASP.NET Core 3.X.
-Follow the guide you are interesting in.
+There are 2 versions of the package, with the following formats:
+1. Format: `3.X.X.X` for ASP.NET Core 3.X applications
+2. Format: `2.2.X.X` for ASP.NET Core 2.2 applications
+
+> Depending on your application's framework, follow the corresponding guide
+<br/>
 
 ## ASP.NET Core 3.X applications
 
@@ -71,7 +75,7 @@ Follow the guide you are interesting in.
        ConventionalRoutingSwaggerGen.UseRoutes(endpoints);
      });
     ```
- 
+<br/> 
 
 ## ASP.NET Core 2.2 applications
 
@@ -127,7 +131,7 @@ Follow the guide you are interesting in.
 
 ## Compatibility ##
 
-Currently `2.2.X` versions support only ASP.NET Core 2.2 applications, but support will be added for ASP.NET Core 3.X as well.
+The package is compatible with ASP.NET Core 3.X and ASP.NET Core 2.2 applications.
 
 |Generator Version|ASP.NET Core|Original dependency|
 |----------|----------|----------|
