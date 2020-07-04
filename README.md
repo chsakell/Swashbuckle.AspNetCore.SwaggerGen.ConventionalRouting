@@ -35,9 +35,17 @@ There are 2 versions of the package, with the following formats:
     services.AddSwaggerGenWithConventionalRoutes();
     ```
     
- 3. In the `Configure` method of `Startup.cs`, after registering all your conventional routes, pass the `endpoints` as an argument to the Conventional Routing generator.
+ 3. In the `Configure` method of `Startup.cs`, add `Swagger` and `SwaggerUI` middlewares and after registering all your conventional routes, pass the `endpoints` as an argument to the Conventional Routing generator.
     
     ```csharp
+    
+    app.UseSwagger();
+
+    app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+            
     app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -101,9 +109,17 @@ There are 2 versions of the package, with the following formats:
     services.AddSwaggerGenWithConventionalRoutes();
     ```
     
- 3. In the `Configure` method of `Startup.cs`, after registering all your conventional routes, pass them as an argument to the Conventional Routing generator.
+ 3. In the `Configure` method of `Startup.cs`, add `Swagger` and `SwaggerUI` middlewares and after registering all your conventional routes, pass them as an argument to the Conventional Routing generator.
     
     ```csharp
+    
+    app.UseSwagger();
+
+    app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+            
     app.UseMvc(router =>
     {
        router.MapRoute("pet-delete", "/mypet/{petId}", defaults: new
