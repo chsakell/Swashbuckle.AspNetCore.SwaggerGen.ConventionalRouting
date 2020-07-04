@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 using PetStore.API.Models;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace PetStore.API.Controllers
+namespace Web.API.Controllers
 { 
     /// <summary>
     /// 

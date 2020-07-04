@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
@@ -8,7 +10,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 {
     public static class ConventionalRoutingSwaggerGen
     {
-        public static List<IRouter> ROUTES;
+        public static List<RoutePattern> ROUTES;
 
         public static IServiceCollection AddSwaggerGenWithConventionalRoutes(
             this IServiceCollection services)
@@ -34,9 +36,22 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             return services;
         }
 
-        public static void UseRoutes(List<IRouter> routes)
+        public static void UseRoutes(IEndpointRouteBuilder endpointRouteBuilder)
         {
-            ROUTES = routes;
+            ROUTES = new List<RoutePattern>();
+            foreach (var endpointDataSource in endpointRouteBuilder.DataSources)
+            {
+                var conventionalRouteEndpoints = endpointDataSource.Endpoints.Where(e => e.DisplayName.StartsWith("Route:"));
+                foreach (var conventionalRouteEndpoint in conventionalRouteEndpoints)
+                {
+                  var routePatternProp =  typeof(RouteEndpoint).GetProperty("RoutePattern")?.GetValue(conventionalRouteEndpoint);
+                  if (routePatternProp is RoutePattern routePattern)
+                  {
+                      ROUTES.Add(routePattern);
+                  }
+                }
+                
+            }
         }
     }
 }

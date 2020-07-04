@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace PetStore.API
+namespace Web.API
 {
     public class GenericMatchRouteConstraint : IRouteConstraint
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PetStore.API.Controllers
+namespace Web.API.Controllers
 {
     // Test regex in swagger gen
     public class HelloWorldController : Controller
