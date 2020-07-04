@@ -129,6 +129,8 @@ There are 2 versions of the package, with the following formats:
      });
     ```
 
+<br/>
+
 ## Compatibility ##
 
 The package is compatible with ASP.NET Core 3.X and ASP.NET Core 2.2 applications.
@@ -152,6 +154,7 @@ The package is compatible with ASP.NET Core 3.X and ASP.NET Core 2.2 application
 ## Contribution ##
 
 You are free to contribute by either improving the quality of the generator or opening an issue for a bug or feature request
+Currently, master contains the implementation for ASP.NET Core 2.2 compatibility while [aspnetcore_3.0](https://github.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting/tree/aspnetcore_3.0) is the branch for ASP.NET Core 3.X
     
 ## License ##
 Code released under the <a href="https://github.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting/blob/master/LICENSE" target="_blank"> MIT license</a>
