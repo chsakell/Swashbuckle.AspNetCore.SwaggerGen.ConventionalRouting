@@ -155,7 +155,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
                 foreach (var actionDescriptor in context.Results)
                 {
-                    if (actionDescriptor.AttributeRouteInfo == null)
+                    if (actionDescriptor.AttributeRouteInfo == null || actionDescriptor.ActionConstraints == null)
                     {
                         if (actionDescriptor.ActionConstraints == null)
                         {
