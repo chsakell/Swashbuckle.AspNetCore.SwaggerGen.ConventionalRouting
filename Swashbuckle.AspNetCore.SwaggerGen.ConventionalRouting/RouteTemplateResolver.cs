@@ -234,39 +234,25 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                     isValid = parameter.ParameterType == typeof(int);
                     break;
                 case "bool":
-                    {
                         isValid = parameter.ParameterType == typeof(bool);
-                    }
                     break;
                 case "datetime":
-                    {
                         isValid = parameter.ParameterType == typeof(DateTime);
-                    }
                     break;
                 case "decimal":
-                    {
                         isValid = parameter.ParameterType == typeof(decimal);
-                    }
                     break;
                 case "double":
-                    {
                         isValid = parameter.ParameterType == typeof(double);
-                    }
                     break;
                 case "float":
-                    {
                         isValid = parameter.ParameterType == typeof(float);
-                    }
                     break;
                 case "guid":
-                    {
                         isValid = parameter.ParameterType == typeof(Guid);
-                    }
                     break;
                 case "long":
-                    {
                         isValid = parameter.ParameterType == typeof(long);
-                    }
                     break;
             }
 
