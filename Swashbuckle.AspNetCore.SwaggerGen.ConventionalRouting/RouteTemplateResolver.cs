@@ -108,6 +108,17 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                         passConstraint =
                                             PassConstraint(parameterInfo, routeConstraint);
 
+                                        if (passConstraint && paramBindingInfo == null)
+                                        {
+                                            var routeParam = route.ParsedTemplate.Parameters[paramIndex];
+                                            if (routeParam.Name.Equals(firstPart.Name,
+                                                StringComparison.CurrentCultureIgnoreCase) && !routeParam.IsOptional)
+                                            {
+                                                template += $"{{{firstPart.Name}}}/";
+                                                break;
+                                            }
+                                        }
+
                                         if (!passConstraint && parameterInfo.BindingInfo?.BindingSource.Id != "Query")
                                         {
                                             template = null;
@@ -203,6 +214,24 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             if (constraint is OptionalRouteConstraint optionalRouteConstraint)
             {
                 isValid = IsValidRouteConstraint(parameter, optionalRouteConstraint.InnerConstraint);
+            }
+            else if (constraint is RegexRouteConstraint regexRouteConstraint)
+            {
+                var parameterType = parameter.ParameterType;
+                if (parameterType.IsValueType)
+                {
+                    var regex = regexRouteConstraint.Constraint;
+                    var defaultTypeValue = Activator.CreateInstance(parameterType);
+                    isValid = regex.IsMatch(defaultTypeValue.ToString());
+                }
+                else if (constraint is AlphaRouteConstraint && parameter.BindingInfo == null)
+                {
+                    isValid = true;
+                }
+            }
+            else if (constraint is DateTimeRouteConstraint)
+            {
+                isValid = parameter.ParameterType == typeof(DateTime);
             }
             else
             {

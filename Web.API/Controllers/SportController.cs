@@ -33,5 +33,11 @@ namespace Web.API.Controllers
         {
             return Ok($"Live sports");
         }
+
+        [HttpGet]
+        public IActionResult EventDetails(int id)
+        {
+            return Ok($"Live sports");
+        }
     }
 }

@@ -46,7 +46,7 @@ namespace PetStore.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Test2(DateTime date, string message)
+        public IActionResult Test2([FromRoute] DateTime date, string message)
         {
             return Ok($"date: {date} - message: {message}");
         }
