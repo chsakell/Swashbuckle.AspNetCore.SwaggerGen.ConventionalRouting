@@ -13,11 +13,11 @@ There are 2 versions of the package, with the following formats:
 
 ## ASP.NET Core 3.X applications
 
-1. Install the standard Nuget package into your ASP.NET Core application.
+1. Install the latest standard Nuget package into your ASP.NET Core application.
 
     ```
-    Package Manager : Install-Package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting -Version 3.0.1.2
-    CLI : dotnet add package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting --version 3.0.1.2
+    Package Manager : Install-Package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting -Version 3.0.1.3
+    CLI : dotnet add package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting --version 3.0.1.3
     ```
 > The extension has a dependency on the [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore) so you don't have to install it twice.
 
@@ -87,11 +87,11 @@ There are 2 versions of the package, with the following formats:
 
 ## ASP.NET Core 2.2 applications
 
-1. Install the standard Nuget package into your ASP.NET Core application.
+1. Install the latest standard Nuget package into your ASP.NET Core application.
 
     ```
-    Package Manager : Install-Package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting -Version 2.2.1.2
-    CLI : dotnet add package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting --version 2.2.1.2
+    Package Manager : Install-Package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting -Version 2.2.1.3
+    CLI : dotnet add package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting --version 2.2.1.3
     ```
 > The extension has a dependency on the [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore) so you don't have to install it twice.
 
@@ -153,14 +153,22 @@ The package is compatible with ASP.NET Core 3.X and ASP.NET Core 2.2 application
 
 |Generator Version|ASP.NET Core|Original dependency|
 |----------|----------|----------|
-|3.0.1.1|3.X|5.5.1|
-|2.2.1.1|2.2|5.5.1|
+|3.0.1.X|3.X|5.5.1|
+|2.2.1.X|2.2|5.5.1|
 
 ## Notes ##
     
 * Attribute based routes will continue to work as used to
 * The generator tries to match each controller action method to a registered route. It case multiple routes meet the action's descriptor definition, then the first route wins
-* Controller action methods are not required to have an `HTTP` method attribute. In case an action doesn't have an HTTP method attribute applied, the generator will assume it's a GET request
+* Controller action methods are not required to have an `HTTP` method attribute. The generator will assign a default HTTP method depending on the action's name as follow:
+
+|Name starts with|Assigned HTTP method|
+|----------|----------|
+|Post|POST|
+|Put, Create|PUT|
+|Patch|PATCH|
+|Delete, Remove|DELETE|
+|all others|GET|
 
 ## Roadmap ##
 
