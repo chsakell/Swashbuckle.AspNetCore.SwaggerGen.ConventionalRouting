@@ -125,6 +125,16 @@ namespace Web.API
                     action = "Live"
                 });
 
+                endpoints.MapControllerRoute("sport-event-details", "{oddspath}/{teams}/{id}", new
+                {
+                    controller = "Sport",
+                    action = "EventDetails"
+                }, new
+                {
+                    id = @"\d+",
+                    oddspath = new GenericMatchRouteConstraint(new[] { "odds", "matchodds" })
+                });
+
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 
                 ConventionalRoutingSwaggerGen.UseRoutes(endpoints);

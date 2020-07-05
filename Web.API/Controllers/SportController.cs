@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace PetStore.API.Controllers
+namespace Web.API.Controllers
 {
     public class SportController : Controller
     {
@@ -32,6 +32,12 @@ namespace PetStore.API.Controllers
         public IActionResult Live()
         {
             return Ok($"Live sports");
+        }
+
+        [HttpGet]
+        public IActionResult EventDetails(int id)
+        {
+            return Ok($"Event {id} details");
         }
     }
 }

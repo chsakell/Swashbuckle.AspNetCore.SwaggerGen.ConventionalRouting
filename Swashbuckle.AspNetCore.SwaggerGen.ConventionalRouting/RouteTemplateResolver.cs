@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Models;
 
@@ -223,6 +224,24 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
         private bool IsValidRoutePolicy(ParameterDescriptor parameter, RoutePatternParameterPolicyReference policy)
         {
             var isValid = false;
+
+            if(policy != null && string.IsNullOrEmpty(policy.Content) 
+                              && policy.ParameterPolicy is RegexRouteConstraint regexRouteConstraint)
+            {
+                var parameterType = parameter.ParameterType;
+                if (parameterType.IsValueType)
+                {
+                    var regex = regexRouteConstraint.Constraint;
+                    var defaultTypeValue = Activator.CreateInstance(parameterType);
+                    isValid = regex.IsMatch(defaultTypeValue.ToString());
+                }
+                else if (policy.ParameterPolicy is AlphaRouteConstraint && parameter.BindingInfo == null)
+                {
+                    isValid = true;
+                }
+
+                return isValid;
+            }
 
             switch (policy.Content)
             {
