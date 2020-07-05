@@ -5,6 +5,12 @@ namespace PetStore.API.Controllers
     public class SportController : Controller
     {
         [HttpGet]
+        public IActionResult Index()
+        {
+            return Ok($"Sport index");
+        }
+
+        [HttpGet]
         public IActionResult Details(int eventId)
         {
             return Ok($"Event {eventId}");
