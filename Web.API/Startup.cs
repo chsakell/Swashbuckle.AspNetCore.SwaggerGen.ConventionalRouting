@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PetStore.API;
 using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting;
 
-namespace PetStore.API
+namespace Web.API
 {
     public class Startup
     {

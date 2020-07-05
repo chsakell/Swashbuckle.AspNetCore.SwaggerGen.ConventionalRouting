@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace PetStore.API.Models
+namespace Web.API.Models
 {
     [DataContract]
     public class Category
