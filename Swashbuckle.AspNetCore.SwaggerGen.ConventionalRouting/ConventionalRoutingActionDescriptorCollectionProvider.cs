@@ -12,12 +12,12 @@ using Microsoft.Extensions.Primitives;
 
 namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 {
-    public interface IConventionalRoutingActionDescriptorCollectionProvider : 
+    public interface IConventionalRoutingActionDescriptorCollectionProvider :
         IActionDescriptorCollectionProvider
     {
 
     }
-    
+
     public class ConventionalRoutingActionDescriptorCollectionProvider : ActionDescriptorCollectionProvider, IConventionalRoutingActionDescriptorCollectionProvider
     {
         private readonly IRouteTemplateResolver _routeTemplateResolver;
@@ -159,10 +159,11 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                     {
                         if (actionDescriptor.ActionConstraints == null)
                         {
+                            var httpMethod = GetHttpMethod(actionDescriptor);
                             // check from config for default HTTP method
                             actionDescriptor.ActionConstraints = new List<IActionConstraintMetadata>
                             {
-                                new HttpMethodActionConstraint(new[] {"GET"})
+                                new HttpMethodActionConstraint(new[] {httpMethod})
                             };
                         }
                         var routeTemplate = _routeTemplateResolver.ResolveRouteTemplate(actionDescriptor);
@@ -188,6 +189,44 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                 // Step 4 - might be null if it's the first time.
                 oldCancellationTokenSource?.Cancel();
             }
+        }
+
+        private string GetHttpMethod(ActionDescriptor descriptor)
+        {
+            var method = "GET";
+
+            var action = GetActionDescriptorAction(descriptor).ToLower();
+
+            if (action.StartsWith("post"))
+            {
+                method = "POST";
+            }
+            else if (action.StartsWith("update") || action.StartsWith("put"))
+            {
+                method = "PUT";
+            }
+            else if (action.StartsWith("patch"))
+            {
+                method = "PATCH";
+            }
+            else if (action.StartsWith("delete") || action.StartsWith("remove"))
+            {
+                method = "DELETE";
+            }
+
+            return method;
+        }
+
+        private string GetActionDescriptorAction(ActionDescriptor actionDescriptor)
+        {
+            var controller = string.Empty;
+
+            if (actionDescriptor.RouteValues.TryGetValue("action", out var controllerObj))
+            {
+                return controllerObj;
+            }
+
+            return controller;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Internal;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Models;
@@ -94,7 +95,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                 else if (firstPart.IsParameter)
                                 {
                                     var hasActionDescParameter =
-                                        HasActionDescriptorParameter(actionDescriptor, firstPart.Name);
+                                        HasActionDescriptorParameter(actionDescriptor, firstPart.Name, out var paramBindingInfo);
 
                                     if (hasActionDescParameter && hasConstraint)
                                     {
@@ -112,7 +113,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                         }
                                     }
 
-                                    if (hasActionDescParameter)
+                                    if (hasActionDescParameter && paramBindingInfo != null)
                                     {
                                         actionParametersUsed.Add(firstPart.Name);
                                         template += $"{{{firstPart.Name}{(firstPart.IsOptional ? "?" : string.Empty)}}}/";
@@ -322,10 +323,14 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             return controller;
         }
 
-        private bool HasActionDescriptorParameter(ActionDescriptor actionDescriptor, string parameter)
+        private bool HasActionDescriptorParameter(ActionDescriptor actionDescriptor, string parameter, out BindingInfo bindingInfo)
         {
-            return actionDescriptor.Parameters.Any(param =>
+            var param = actionDescriptor.Parameters.FirstOrDefault(param =>
                 param.Name.Equals(parameter, StringComparison.InvariantCultureIgnoreCase));
+
+            bindingInfo = param?.BindingInfo;
+
+            return param != null;
         }
 
         private string WithSuffix(string term, string suffix)
