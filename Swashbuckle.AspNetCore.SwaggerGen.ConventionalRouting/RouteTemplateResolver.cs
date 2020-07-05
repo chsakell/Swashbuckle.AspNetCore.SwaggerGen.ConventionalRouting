@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Routing.Constraints;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Models;
 
@@ -101,7 +99,8 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                 else if (firstPart.IsParameter)
                                 {
                                     var hasActionDescParameter =
-                                        HasActionDescriptorParameter(actionDescriptor, firstPartName);
+                                        HasActionDescriptorParameter(actionDescriptor, firstPartName, 
+                                            out var paramBindingInfo);
 
                                     if (hasActionDescParameter && hasConstraint)
                                     {
@@ -119,7 +118,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                         }
                                     }
 
-                                    if (hasActionDescParameter)
+                                    if (hasActionDescParameter && paramBindingInfo != null)
                                     {
                                         actionParametersUsed.Add(firstPartName);
                                         template += $"{{{firstPartName}{(firstPartIsOptional ? "?" : string.Empty)}}}/";
@@ -234,25 +233,25 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                     isValid = parameter.ParameterType == typeof(int);
                     break;
                 case "bool":
-                        isValid = parameter.ParameterType == typeof(bool);
+                    isValid = parameter.ParameterType == typeof(bool);
                     break;
                 case "datetime":
-                        isValid = parameter.ParameterType == typeof(DateTime);
+                    isValid = parameter.ParameterType == typeof(DateTime);
                     break;
                 case "decimal":
-                        isValid = parameter.ParameterType == typeof(decimal);
+                    isValid = parameter.ParameterType == typeof(decimal);
                     break;
                 case "double":
-                        isValid = parameter.ParameterType == typeof(double);
+                    isValid = parameter.ParameterType == typeof(double);
                     break;
                 case "float":
-                        isValid = parameter.ParameterType == typeof(float);
+                    isValid = parameter.ParameterType == typeof(float);
                     break;
                 case "guid":
-                        isValid = parameter.ParameterType == typeof(Guid);
+                    isValid = parameter.ParameterType == typeof(Guid);
                     break;
                 case "long":
-                        isValid = parameter.ParameterType == typeof(long);
+                    isValid = parameter.ParameterType == typeof(long);
                     break;
             }
 
@@ -324,10 +323,14 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             return controller;
         }
 
-        private bool HasActionDescriptorParameter(ActionDescriptor actionDescriptor, string parameter)
+        private bool HasActionDescriptorParameter(ActionDescriptor actionDescriptor, string parameter, out BindingInfo bindingInfo)
         {
-            return actionDescriptor.Parameters.Any(param =>
+            var param = actionDescriptor.Parameters.FirstOrDefault(param =>
                 param.Name.Equals(parameter, StringComparison.InvariantCultureIgnoreCase));
+
+            bindingInfo = param?.BindingInfo;
+
+            return param != null;
         }
 
         private string WithSuffix(string term, string suffix)

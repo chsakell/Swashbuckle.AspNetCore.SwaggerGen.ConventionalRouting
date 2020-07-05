@@ -13,7 +13,7 @@
     <PackageTags>swagger,routing, aspnetcore</PackageTags>
     <Product />
     <Description>Swagger Generator extension for ASP.NET Core APIs built using conventional routing</Description>
-    <Version>3.0.1.2</Version>
+    <Version>3.0.1.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
