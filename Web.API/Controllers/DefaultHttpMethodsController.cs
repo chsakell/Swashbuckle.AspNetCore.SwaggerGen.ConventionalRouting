@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PetStore.API.Models;
+using Web.API.Models;
 
 namespace Web.API.Controllers
 {

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
-namespace PetStore.API.Models
+namespace Web.API.Models
 {
     /// <summary>
     /// Order Status

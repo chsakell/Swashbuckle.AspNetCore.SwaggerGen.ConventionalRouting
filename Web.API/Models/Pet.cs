@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
-using Newtonsoft.Json;
 
-namespace PetStore.API.Models
+namespace Web.API.Models
 {
     public class Pet
     {
