@@ -62,7 +62,8 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                 }
                                 else if (firstPart.Name.Equals("controller"))
                                 {
-                                    if (hasConstraint && !IsCustomConstraint(routeConstraint))
+                                    if (hasConstraint && 
+                                        (!IsCustomConstraint(routeConstraint) || IsRegexConstraint(routeConstraint)))
                                     {
                                         passConstraint =
                                             PassConstraint(actionMatchConfig.Controller, routeConstraint);
@@ -78,7 +79,8 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                 }
                                 else if (firstPart.Name.Equals("action"))
                                 {
-                                    if (hasConstraint)
+                                    if (hasConstraint &&
+                                        (!IsCustomConstraint(routeConstraint) || IsRegexConstraint(routeConstraint)))
                                     {
                                         passConstraint =
                                             PassConstraint(actionMatchConfig.Action, routeConstraint);
@@ -269,6 +271,11 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                         constraint is AlphaRouteConstraint);
 
             return isCustomConstraint;
+        }
+
+        private bool IsRegexConstraint(IRouteConstraint constraint)
+        {
+            return constraint is RegexInlineRouteConstraint;
         }
 
         private string GetRouteController(Route route, out bool isParameter)

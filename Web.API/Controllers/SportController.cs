@@ -1,9 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace PetStore.API.Controllers
+namespace Web.API.Controllers
 {
     public class SportController : Controller
     {
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return Ok($"Sport index");
+        }
+
         [HttpGet]
         public IActionResult Details(int eventId)
         {
