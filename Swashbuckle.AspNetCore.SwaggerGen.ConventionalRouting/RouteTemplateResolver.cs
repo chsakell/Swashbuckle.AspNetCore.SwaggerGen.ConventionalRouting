@@ -24,19 +24,22 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                 {
                     if (route != null)
                     {
+                        var routeArea = GetRouteArea(route, out bool isAreaParameter);
                         var routeController = GetRouteController(route, out var isControllerParameter);
                         var routeAction = GetRouteAction(route, out bool isActionParameter);
 
+                        var actionDescArea = GetActionDescriptorArea(actionDescriptor);
                         var actionDescController = GetActionDescriptorController(actionDescriptor);
                         var actionDescAction = GetActionDescriptorAction(actionDescriptor);
 
-                        var routeMatchConfig = new MatchConfig(routeController, routeAction)
+                        var routeMatchConfig = new MatchConfig(routeArea, routeController, routeAction)
                         {
+                            IsAreaParameter = isAreaParameter,
                             IsControllerParameter = isControllerParameter,
                             IsActionParameter = isActionParameter
                         };
 
-                        var actionMatchConfig = new MatchConfig(actionDescController, actionDescAction);
+                        var actionMatchConfig = new MatchConfig(actionDescArea, actionDescController, actionDescAction);
 
                         if (MatchConfig.Match(routeMatchConfig, actionMatchConfig))
                         {
@@ -63,7 +66,22 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                 {
                                     template += $"{firstPartName}/";
                                 }
+                                else if (firstPartName.Equals("area"))
+                                {
+                                    if (hasConstraint)
+                                    {
+                                        passConstraint =
+                                            PassPolicyReference(actionMatchConfig.Area, policyReference);
 
+                                        if (!passConstraint)
+                                        {
+                                            template = null;
+                                            break;
+                                        }
+                                    }
+
+                                    template += $"{actionMatchConfig.Area}/";
+                                }
                                 else if (firstPartName.Equals("controller"))
                                 {
                                     if (hasConstraint && !IsCustomPolicyReference(policyReference))
@@ -290,6 +308,20 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             return isCustomPolicyReference;
         }
 
+        private string GetRouteArea(RoutePattern route, out bool isParameter)
+        {
+            string area = null;
+
+            isParameter = route.Parameters.Any(p => p.Name.Equals("area"));
+
+            if (route.Defaults.TryGetValue("area", out var areaObj))
+            {
+                return areaObj.ToString();
+            }
+
+            return area;
+        }
+
         private string GetRouteController(RoutePattern route, out bool isParameter)
         {
             var controller = string.Empty;
@@ -316,6 +348,18 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             }
 
             return action;
+        }
+        
+        private string GetActionDescriptorArea(ActionDescriptor actionDescriptor)
+        {
+            string area = null;
+
+            if (actionDescriptor.RouteValues.TryGetValue("area", out var areaObj))
+            {
+                return areaObj;
+            }
+
+            return area;
         }
 
         private string GetActionDescriptorController(ActionDescriptor actionDescriptor)
