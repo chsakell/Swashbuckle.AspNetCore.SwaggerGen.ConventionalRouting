@@ -6,13 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\MyStoreController.cs" />
-    <Compile Remove="Controllers\MyUserController.cs" />
-    <Compile Remove="Controllers\StoreController.cs" />
-    <Compile Remove="Controllers\UserController.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
