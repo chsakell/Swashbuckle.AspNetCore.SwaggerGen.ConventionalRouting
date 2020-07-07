@@ -10,7 +10,8 @@
     <Company />
     <PackageProjectUrl>Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting</PackageProjectUrl>
     <RepositoryUrl>https://github.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting</RepositoryUrl>
-    <PackageTags>swagger,routing, aspnetcore</PackageTags>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting/master/LICENSE</PackageLicenseUrl>
+    <PackageTags>swagger, documentation, discovery, help, webapi, aspnet, aspnetcore</PackageTags>
     <Product />
     <Description>Swagger Generator extension for ASP.NET Core APIs built using conventional routing</Description>
     <Version>3.0.1.4</Version>
