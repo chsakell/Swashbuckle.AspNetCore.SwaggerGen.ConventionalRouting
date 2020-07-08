@@ -132,7 +132,7 @@ namespace Web.API
                     oddspath = new GenericMatchRouteConstraint(new[] { "odds", "matchodds" })
                 });
 
-                router.MapRoute("area-default", "{area:regex(^P.*)}/{controller=Home}/{action=Index}/{id?}");
+                router.MapRoute("area-default", "api/{area}/{controller=Home}/{action=Index}/{id?}");
 
                 router.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
 

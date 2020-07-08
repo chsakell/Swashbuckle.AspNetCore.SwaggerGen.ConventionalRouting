@@ -65,6 +65,12 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                 }
                                 else if (firstPart.Name.Equals("area"))
                                 {
+                                    if (string.IsNullOrEmpty(actionDescArea))
+                                    {
+                                        template = null;
+                                        break;
+                                    }
+
                                     if (hasConstraint &&
                                         (!IsCustomConstraint(routeConstraint) || IsRegexConstraint(routeConstraint)))
                                     {
