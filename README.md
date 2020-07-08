@@ -181,5 +181,10 @@ The package is compatible with ASP.NET Core 3.X and ASP.NET Core 2.2 application
 * Currently, master contains the implementation for ASP.NET Core 2.2 compatibility while [aspnetcore_3.0](https://github.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting/tree/aspnetcore_3.0) is the branch for ASP.NET Core 3.X
 * In case you open an issue, make sure you give enough details to reproduce it, for example if the generator creates a wrong swagger route _(returns 404)_ for a controller's action, then give the route configuration and the controller's action
 
+## Donation ##
+You can show your support to this project by making a donation via PayPal
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=SQK68T4HX9H56&currency_code=EUR&source=url)
+
 ## License ##
 Code released under the <a href="https://github.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting/blob/master/LICENSE" target="_blank"> MIT license</a>
