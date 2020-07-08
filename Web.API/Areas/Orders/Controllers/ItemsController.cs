@@ -1,26 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Web.API.Areas.Products.Controllers
+namespace Web.API.Areas.Orders.Controllers
 {
-    [Area("Products")]
+    [Area("Orders")]
     public class ItemsController : Controller
     {
         [HttpGet]
         public IActionResult Index()
         {
-            return Ok("Products Area Items Index");
+            return Ok("Orders Area Index");
         }
 
         [HttpGet]
         public IActionResult Get([FromRoute] int id)
         {
-            return Ok($"Products Get Item {id}");
+            return Ok($"Orders Area Get Item {id}");
         }
 
         [HttpGet]
         public IActionResult List()
         {
-            return Ok("Products Area List");
+            return Ok("Orders Area Items List");
         }
     }
 }

@@ -135,8 +135,9 @@ namespace Web.API
                     oddspath = new GenericMatchRouteConstraint(new[] { "odds", "matchodds" })
                 });
 
-                endpoints.MapControllerRoute("area-default", "{area:regex(^P.*)}/{controller=Home}/{action=Index}/{id?}");
 
+                endpoints.MapControllerRoute("area-default", "api/{area}/{controller=Home}/{action=Index}/{id?}");
+                
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 
                 ConventionalRoutingSwaggerGen.UseRoutes(endpoints);
