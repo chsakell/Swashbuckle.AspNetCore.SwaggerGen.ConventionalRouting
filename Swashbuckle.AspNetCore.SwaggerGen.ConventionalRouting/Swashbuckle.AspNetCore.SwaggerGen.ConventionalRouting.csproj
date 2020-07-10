@@ -14,7 +14,7 @@
     <PackageTags>swagger, documentation, discovery, help, webapi, aspnet, aspnetcore</PackageTags>
     <Product />
     <Description>Swagger Generator extension for ASP.NET Core APIs built using conventional routing</Description>
-    <Version>3.0.1.6</Version>
+    <Version>3.0.1.7</Version>
   </PropertyGroup>
 
   <ItemGroup>
