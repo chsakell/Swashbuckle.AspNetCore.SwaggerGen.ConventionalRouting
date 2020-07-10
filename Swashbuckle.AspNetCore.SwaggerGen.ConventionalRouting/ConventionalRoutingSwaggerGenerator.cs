@@ -1,4 +1,6 @@
-﻿using Swashbuckle.AspNetCore.Swagger;
+﻿using System;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 {
@@ -13,7 +15,34 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             IConventionalRoutingApiDescriptionGroupCollectionProvider apiDescriptionsProvider, 
             ISchemaGenerator schemaGenerator) : base(options, apiDescriptionsProvider, schemaGenerator)
         {
-            
+            if (options.TagsSelector.Method.Name.Equals("DefaultTagsSelector",
+                StringComparison.InvariantCultureIgnoreCase))
+            {
+                options.TagsSelector = (apiDesc) =>
+                {
+                    if (apiDesc.GroupName != null)
+                    {
+                        return new[] {apiDesc.GroupName};
+                    }
+
+                    var controllerActionDescriptor = apiDesc.ActionDescriptor as ControllerActionDescriptor;
+
+                    try
+                    {
+                        if (controllerActionDescriptor.RouteValues.TryGetValue("area", out string area) &&
+                            !string.IsNullOrEmpty(area))
+                        {
+                            return new[] {$"{area}.{controllerActionDescriptor.ControllerName}"};
+                        }
+
+                        return new[] {controllerActionDescriptor.ControllerName};
+                    }
+                    catch (Exception ex)
+                    {
+                        return options.TagsSelector.Invoke(apiDesc);
+                    }
+                };
+            }
         }
     }
 }
