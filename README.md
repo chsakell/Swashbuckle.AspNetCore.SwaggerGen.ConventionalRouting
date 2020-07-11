@@ -1,6 +1,6 @@
 ## Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
-Swagger generator extension for conventional based routes support.
+Swagger generator extension with conventional based routes support.
 
 NuGet: [Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting/)
 
