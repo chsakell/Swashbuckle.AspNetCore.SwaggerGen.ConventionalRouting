@@ -6,6 +6,14 @@ For each release both ASP.NET Core 3.X and ASP.NET Core 2.X packages are referen
 
 ## [Released]
 
+## [4.0.0] - 2020-12-15
+
+### Changed
+
+- One package supports both ASP.NET Core 2.2 & ASP.NET Core 3.X applications
+- Master branch is used for both ASP.NET Core 2.2 & ASP.NET Core 3.X builds
+- Update original referenced `Swashbuckle.AspNetCore` to version `5.6.3`
+
 ## [3.0.1.7] , [2.2.1.8] - 2020-07-10
 
 ### Changed
