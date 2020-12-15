@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#if NETCOREAPP2_2
+
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -40,3 +42,5 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
         }
     }
 }
+
+#endif

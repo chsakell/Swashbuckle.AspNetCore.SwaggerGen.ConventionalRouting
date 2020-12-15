@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#if NETCOREAPP2_2
+
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -230,3 +232,5 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
         }
     }
 }
+
+#endif

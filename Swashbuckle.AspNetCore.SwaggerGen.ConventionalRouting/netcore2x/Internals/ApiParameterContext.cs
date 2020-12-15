@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#if NETCOREAPP2_2
+
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -29,3 +31,5 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Internals
         public IReadOnlyList<TemplatePart> RouteParameters { get; }
     }
 }
+
+#endif

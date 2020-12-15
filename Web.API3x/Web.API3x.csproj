@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting\Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.csproj" />
+  </ItemGroup>
+
+</Project>

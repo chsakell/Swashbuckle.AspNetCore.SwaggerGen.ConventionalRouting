@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if NETCOREAPP2_2
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -19,3 +21,5 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
         }
     }
 }
+
+#endif

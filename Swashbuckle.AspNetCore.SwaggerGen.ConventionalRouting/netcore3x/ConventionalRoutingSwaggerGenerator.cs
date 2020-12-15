@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if NETCOREAPP3_1
+
+using System;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -46,3 +48,5 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
         }
     }
 }
+
+#endif

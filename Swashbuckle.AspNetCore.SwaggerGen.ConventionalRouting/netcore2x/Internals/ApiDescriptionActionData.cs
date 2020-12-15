@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if NETCOREAPP2_2
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,3 +15,5 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Internals
         public string GroupName { get; set; }
     }
 }
+
+#endif

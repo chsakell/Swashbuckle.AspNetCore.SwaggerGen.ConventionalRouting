@@ -1,11 +1,14 @@
-﻿using System;
+﻿#if NETCOREAPP3_1
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc.Abstractions;
-using Microsoft.AspNetCore.Mvc.Internal;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Constraints;
+using Microsoft.AspNetCore.Routing.Patterns;
 using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Models;
 
 namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
@@ -19,9 +22,8 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
             if (routes != null)
             {
-                foreach (var router in routes)
+                foreach (var route in routes)
                 {
-                    var route = router as Route;
                     if (route != null)
                     {
                         var routeArea = GetRouteArea(route, out bool isAreaParameter);
@@ -45,25 +47,28 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                         {
                             var paramIndex = 0;
                             var actionParametersUsed = new List<string>();
-                            foreach (var segment in route.ParsedTemplate.Segments)
+                            foreach (var segment in route.PathSegments)
                             {
                                 var firstPart = segment.Parts.First();
+                                var firstPartName = GetRoutePatternPartPropertyValue(firstPart, out bool firstPartIsOptional);
 
-                                var hasConstraint = route.Constraints != null &&
-                                                           route.Constraints.Any(c => c.Key.Equals(firstPart.Name));
+                                var hasConstraint = !firstPart.IsLiteral && route.ParameterPolicies != null &&
+                                                          route.ParameterPolicies.Any(c => c.Key.Equals(firstPartName));
 
-                                IRouteConstraint routeConstraint = null;
+                                RoutePatternParameterPolicyReference policyReference = null;
                                 bool passConstraint = false;
                                 if (hasConstraint)
                                 {
-                                    routeConstraint = route.Constraints[firstPart.Name];
+                                    policyReference = route.ParameterPolicies
+                                        .FirstOrDefault(policy => policy.Key.Equals(firstPartName))
+                                        .Value.FirstOrDefault();
                                 }
 
                                 if (firstPart.IsLiteral)
                                 {
-                                    template += $"{firstPart.Text}/";
+                                    template += $"{firstPartName}/";
                                 }
-                                else if (firstPart.Name.Equals("area"))
+                                else if (firstPartName.Equals("area"))
                                 {
                                     if (string.IsNullOrEmpty(actionDescArea))
                                     {
@@ -71,11 +76,10 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                         break;
                                     }
 
-                                    if (hasConstraint &&
-                                        (!IsCustomConstraint(routeConstraint) || IsRegexConstraint(routeConstraint)))
+                                    if (hasConstraint)
                                     {
                                         passConstraint =
-                                            PassConstraint(actionMatchConfig.Area, routeConstraint);
+                                            PassPolicyReference(actionMatchConfig.Area, policyReference);
 
                                         if (!passConstraint)
                                         {
@@ -86,13 +90,12 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
                                     template += $"{actionMatchConfig.Area}/";
                                 }
-                                else if (firstPart.Name.Equals("controller"))
+                                else if (firstPartName.Equals("controller"))
                                 {
-                                    if (hasConstraint && 
-                                        (!IsCustomConstraint(routeConstraint) || IsRegexConstraint(routeConstraint)))
+                                    if (hasConstraint && !IsCustomPolicyReference(policyReference))
                                     {
                                         passConstraint =
-                                            PassConstraint(actionMatchConfig.Controller, routeConstraint);
+                                            PassPolicyReference(actionMatchConfig.Controller, policyReference);
 
                                         if (!passConstraint)
                                         {
@@ -103,13 +106,12 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
                                     template += $"{WithNoSuffix(actionMatchConfig.Controller, "Controller")}/";
                                 }
-                                else if (firstPart.Name.Equals("action"))
+                                else if (firstPartName.Equals("action"))
                                 {
-                                    if (hasConstraint &&
-                                        (!IsCustomConstraint(routeConstraint) || IsRegexConstraint(routeConstraint)))
+                                    if (hasConstraint)
                                     {
                                         passConstraint =
-                                            PassConstraint(actionMatchConfig.Action, routeConstraint);
+                                            PassPolicyReference(actionMatchConfig.Action, policyReference);
 
                                         if (!passConstraint)
                                         {
@@ -120,30 +122,21 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
                                     template += $"{actionMatchConfig.Action}/";
                                 }
+
                                 else if (firstPart.IsParameter)
                                 {
                                     var hasActionDescParameter =
-                                        HasActionDescriptorParameter(actionDescriptor, firstPart.Name, out var paramBindingInfo);
+                                        HasActionDescriptorParameter(actionDescriptor, firstPartName, 
+                                            out var paramBindingInfo);
 
                                     if (hasActionDescParameter && hasConstraint)
                                     {
                                         var parameterInfo = actionDescriptor.Parameters.First(param =>
-                                            param.Name.Equals(firstPart.Name,
+                                            param.Name.Equals(firstPartName,
                                                 StringComparison.InvariantCultureIgnoreCase));
 
                                         passConstraint =
-                                            PassConstraint(parameterInfo, routeConstraint);
-
-                                        if (passConstraint && paramBindingInfo == null)
-                                        {
-                                            var routeParam = route.ParsedTemplate.Parameters[paramIndex];
-                                            if (routeParam.Name.Equals(firstPart.Name,
-                                                StringComparison.CurrentCultureIgnoreCase) && !routeParam.IsOptional)
-                                            {
-                                                template += $"{{{firstPart.Name}}}/";
-                                                break;
-                                            }
-                                        }
+                                            IsValidRoutePolicy(parameterInfo, policyReference);
 
                                         if (!passConstraint && parameterInfo.BindingInfo?.BindingSource.Id != "Query")
                                         {
@@ -154,15 +147,17 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
                                     if (hasActionDescParameter && paramBindingInfo != null)
                                     {
-                                        actionParametersUsed.Add(firstPart.Name);
-                                        template += $"{{{firstPart.Name}{(firstPart.IsOptional ? "?" : string.Empty)}}}/";
+                                        actionParametersUsed.Add(firstPartName);
+                                        template += $"{{{firstPartName}{(firstPartIsOptional ? "?" : string.Empty)}}}/";
                                     }
-                                    else if (!firstPart.IsOptional)
+                                    else if (!firstPartIsOptional)
                                     {
-                                        if (hasConstraint && IsCustomConstraint(routeConstraint) ||
-                                            route.ParsedTemplate.Parameters.IndexOf(firstPart) != route.ParsedTemplate.Parameters.Count -1)
+                                        var param = route.Parameters.FirstOrDefault(param =>
+                                            param.Name.Equals(firstPartName));
+                                        if (hasConstraint && IsCustomPolicyReference(policyReference) ||
+                                            route.Parameters.ToList().IndexOf(param) != route.Parameters.Count - 1)
                                         {
-                                            template += $"{{{firstPart.Name}}}/";
+                                            template += $"{{{firstPartName}}}/";
                                         }
                                         else
                                         {
@@ -176,8 +171,8 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                             .FirstOrDefault(c => c.GetType() == typeof(HttpMethodActionConstraint));
 
                                         if (httpMethod != null &&
-                                            ((HttpMethodActionConstraint) httpMethod).HttpMethods.Count() == 1 &&
-                                            ((HttpMethodActionConstraint) httpMethod).HttpMethods.First().Equals("GET"))
+                                            ((HttpMethodActionConstraint)httpMethod).HttpMethods.Count() == 1 &&
+                                            ((HttpMethodActionConstraint)httpMethod).HttpMethods.First().Equals("GET"))
                                         {
                                             var unusedParameters = actionDescriptor.Parameters.Where(param =>
                                                 !actionParametersUsed.Contains(param.Name));
@@ -214,34 +209,50 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             }
 
             return template;
+
         }
 
-        private bool PassConstraint(string term, IRouteConstraint constraint)
+        private string GetRoutePatternPartPropertyValue(RoutePatternPart part, out bool isOptional)
+        {
+            var value = string.Empty;
+
+            if (part is RoutePatternLiteralPart literalPart)
+            {
+                value = literalPart.Content;
+            }
+            else if (part is RoutePatternParameterPart parameterPart)
+            {
+                value = parameterPart.Name;
+            }
+
+            bool.TryParse(part.GetType().GetProperty("IsOptional")?.GetValue(part).ToString(), out isOptional);
+
+            return value;
+        }
+
+        private bool PassPolicyReference(string term, RoutePatternParameterPolicyReference policy)
         {
             var isValid = false;
 
-            if (string.IsNullOrEmpty(term) || constraint == null)
+            if (string.IsNullOrEmpty(term) || policy == null)
             {
                 return false; // something is wrong here..?
             }
 
-            if (constraint is RegexInlineRouteConstraint regexInlineRouteConstraint)
+            if (policy.Content.StartsWith("regex"))
             {
-                isValid = regexInlineRouteConstraint.Constraint.Match(term).Success;
+                isValid = new Regex(policy.Content.Replace("regex", string.Empty)).IsMatch(term);
             }
 
             return isValid;
         }
 
-        private bool PassConstraint(ParameterDescriptor parameter, IRouteConstraint constraint)
+        private bool IsValidRoutePolicy(ParameterDescriptor parameter, RoutePatternParameterPolicyReference policy)
         {
             var isValid = false;
 
-            if (constraint is OptionalRouteConstraint optionalRouteConstraint)
-            {
-                isValid = IsValidRouteConstraint(parameter, optionalRouteConstraint.InnerConstraint);
-            }
-            else if (constraint is RegexRouteConstraint regexRouteConstraint)
+            if(policy != null && string.IsNullOrEmpty(policy.Content) 
+                              && policy.ParameterPolicy is RegexRouteConstraint regexRouteConstraint)
             {
                 var parameterType = parameter.ParameterType;
                 if (parameterType.IsValueType)
@@ -250,94 +261,66 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                     var defaultTypeValue = Activator.CreateInstance(parameterType);
                     isValid = regex.IsMatch(defaultTypeValue.ToString());
                 }
-                else if (constraint is AlphaRouteConstraint && parameter.BindingInfo == null)
+                else if (policy.ParameterPolicy is AlphaRouteConstraint && parameter.BindingInfo == null)
                 {
                     isValid = true;
                 }
+
+                return isValid;
             }
-            else if (constraint is DateTimeRouteConstraint)
+
+            switch (policy.Content)
             {
-                isValid = parameter.ParameterType == typeof(DateTime);
-            }
-            else
-            {
-                isValid = IsValidRouteConstraint(parameter, constraint);
+                case "alpha":
+                    isValid = parameter.ParameterType == typeof(string);
+                    break;
+                case "int":
+                    isValid = parameter.ParameterType == typeof(int);
+                    break;
+                case "bool":
+                    isValid = parameter.ParameterType == typeof(bool);
+                    break;
+                case "datetime":
+                    isValid = parameter.ParameterType == typeof(DateTime);
+                    break;
+                case "decimal":
+                    isValid = parameter.ParameterType == typeof(decimal);
+                    break;
+                case "double":
+                    isValid = parameter.ParameterType == typeof(double);
+                    break;
+                case "float":
+                    isValid = parameter.ParameterType == typeof(float);
+                    break;
+                case "guid":
+                    isValid = parameter.ParameterType == typeof(Guid);
+                    break;
+                case "long":
+                    isValid = parameter.ParameterType == typeof(long);
+                    break;
             }
 
             return isValid;
         }
 
-        private bool IsValidRouteConstraint(ParameterDescriptor parameter, IRouteConstraint constraint)
+        private bool IsCustomPolicyReference(RoutePatternParameterPolicyReference policyReference)
         {
-            var isValid = false;
+            if (policyReference.Content == null && policyReference.ParameterPolicy != null)
+            {
+                return true;
+            }
 
-            if (constraint is IntRouteConstraint intRouteConstraint)
-            {
-                isValid = parameter.ParameterType == typeof(int);
-            }
-            if (constraint is BoolRouteConstraint boolRouteConstraint)
-            {
-                isValid = parameter.ParameterType == typeof(bool);
-            }
-            else if (constraint is DateTimeRouteConstraint dateTimeRouteConstraint)
-            {
-                isValid = parameter.ParameterType == typeof(DateTime);
-            }
-            else if (constraint is DecimalRouteConstraint decimalRouteConstraint)
-            {
-                isValid = parameter.ParameterType == typeof(decimal);
-            }
-            else if (constraint is DoubleRouteConstraint doubleRouteConstraint)
-            {
-                isValid = parameter.ParameterType == typeof(double);
-            }
-            else if (constraint is FloatRouteConstraint floatRouteConstraint)
-            {
-                isValid = parameter.ParameterType == typeof(float);
-            }
-            else if (constraint is GuidRouteConstraint guidRouteConstraint)
-            {
-                isValid = parameter.ParameterType == typeof(Guid);
-            }
-            else if (constraint is LongRouteConstraint longRouteConstraint)
-            {
-                isValid = parameter.ParameterType == typeof(long);
-            }
-            else if (constraint is AlphaRouteConstraint alphaRouteConstraint)
-            {
-                isValid = parameter.ParameterType == typeof(string);
-            }
-            
+            bool isCustomPolicyReference = !(policyReference.Content.Equals("alpha") ||
+                                             policyReference.Content.StartsWith("regex"));
 
-            return isValid;
+            return isCustomPolicyReference;
         }
 
-        private bool IsCustomConstraint(IRouteConstraint constraint)
-        {
-            bool isCustomConstraint = !(constraint is OptionalRouteConstraint ||
-                                        constraint is IntRouteConstraint ||
-                                        constraint is BoolRouteConstraint ||
-                                        constraint is DateTimeRouteConstraint ||
-                                        constraint is DecimalRouteConstraint ||
-                                        constraint is DoubleRouteConstraint ||
-                                        constraint is FloatRouteConstraint ||
-                                        constraint is GuidRouteConstraint ||
-                                        constraint is LongRouteConstraint ||
-                                        constraint is AlphaRouteConstraint);
-
-            return isCustomConstraint;
-        }
-
-        private bool IsRegexConstraint(IRouteConstraint constraint)
-        {
-            return constraint is RegexInlineRouteConstraint;
-        }
-
-        private string GetRouteArea(Route route, out bool isParameter)
+        private string GetRouteArea(RoutePattern route, out bool isParameter)
         {
             string area = null;
 
-            isParameter = route.ParsedTemplate.Parameters.Any(p => p.Name.Equals("area"));
+            isParameter = route.Parameters.Any(p => p.Name.Equals("area"));
 
             if (route.Defaults.TryGetValue("area", out var areaObj))
             {
@@ -347,11 +330,11 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             return area;
         }
 
-        private string GetRouteController(Route route, out bool isParameter)
+        private string GetRouteController(RoutePattern route, out bool isParameter)
         {
             var controller = string.Empty;
 
-            isParameter = route.ParsedTemplate.Parameters.Any(p => p.Name.Equals("controller"));
+            isParameter = route.Parameters.Any(p => p.Name.Equals("controller"));
 
             if (route.Defaults.TryGetValue("controller", out var controllerObj))
             {
@@ -361,11 +344,11 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             return controller;
         }
 
-        private string GetRouteAction(Route route, out bool isParameter)
+        private string GetRouteAction(RoutePattern route, out bool isParameter)
         {
             var action = string.Empty;
 
-            isParameter = route.ParsedTemplate.Parameters.Any(p => p.Name.Equals("action"));
+            isParameter = route.Parameters.Any(p => p.Name.Equals("action"));
 
             if (route.Defaults.TryGetValue("action", out var controllerObj))
             {
@@ -374,7 +357,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
             return action;
         }
-
+        
         private string GetActionDescriptorArea(ActionDescriptor actionDescriptor)
         {
             string area = null;
@@ -448,3 +431,5 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
         string ResolveRouteTemplate(ActionDescriptor actionDescriptor);
     }
 }
+
+#endif

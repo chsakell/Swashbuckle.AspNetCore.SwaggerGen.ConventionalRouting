@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if NETCOREAPP2_2
+
+using System;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -53,3 +55,5 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Internals
         }
     }
 }
+
+#endif

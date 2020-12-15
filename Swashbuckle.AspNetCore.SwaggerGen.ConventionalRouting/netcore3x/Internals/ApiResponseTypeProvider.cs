@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if NETCOREAPP3_1
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -281,3 +283,5 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Internals
         }
     }
 }
+
+#endif
