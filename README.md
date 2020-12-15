@@ -6,9 +6,7 @@ NuGet: [Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting](https://www.nuget
 
 # Getting Started #
 
-There are 2 versions of the package, with the following formats:
-1. Format: `3.X.X.X` for ASP.NET Core 3.X applications
-2. Format: `2.2.X.X` for ASP.NET Core 2.2 applications
+As of version `4.X.X` the same package supports both ASP.NET Core 2.2 & ASP.NET Core 3.X applications
 
 > Depending on your application's framework, follow the corresponding guide
 <br/>
@@ -18,8 +16,8 @@ There are 2 versions of the package, with the following formats:
 1. Install the latest standard Nuget package into your ASP.NET Core application.
 
     ```
-    Package Manager : Install-Package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting -Version 3.0.1.7
-    CLI : dotnet add package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting --version 3.0.1.7
+    Package Manager : Install-Package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
+    CLI : dotnet add package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
     ```
 > The extension has a dependency on the [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore) so you don't have to install it twice.
 
@@ -92,8 +90,8 @@ There are 2 versions of the package, with the following formats:
 1. Install the latest standard Nuget package into your ASP.NET Core application.
 
     ```
-    Package Manager : Install-Package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting -Version 2.2.1.8
-    CLI : dotnet add package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting --version 2.2.1.8
+    Package Manager : Install-Package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
+    CLI : dotnet add package Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
     ```
 > The extension has a dependency on the [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore) so you don't have to install it twice.
 

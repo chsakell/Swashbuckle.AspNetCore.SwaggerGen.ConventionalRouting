@@ -1,4 +1,4 @@
-﻿#if NETCOREAPP3_1
+﻿#if (NETCOREAPP3_0 || NETCOREAPP3_1)
 
 using System;
 using Microsoft.AspNetCore.Mvc.Controllers;

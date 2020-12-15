@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.2;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
   </PropertyGroup>
 
@@ -15,7 +15,7 @@
     <PackageTags>swagger, documentation, discovery, help, webapi, aspnet, aspnetcore</PackageTags>
     <Product />
     <Description>Swagger Generator extension for ASP.NET Core APIs built using conventional routing</Description>
-    <Version>2.2.1.8</Version>
+    <Version>4.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
