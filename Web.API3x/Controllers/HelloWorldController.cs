@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Models;
 
 namespace Web.API.Controllers
 {
@@ -7,6 +8,7 @@ namespace Web.API.Controllers
     public class HelloWorldController : Controller
     {
         [HttpGet]
+        [SwaggerConfig(IgnoreApi = true)]
         public IActionResult Index([FromRoute] string message)
         {
             return Ok(message ?? "Hello World!");

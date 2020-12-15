@@ -5,11 +5,14 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Primitives;
+using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Models;
 
 namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 {
@@ -168,6 +171,22 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                             };
                         }
                         var routeTemplate = _routeTemplateResolver.ResolveRouteTemplate(actionDescriptor);
+
+                        if (actionDescriptor is ControllerActionDescriptor controllerActionDescriptor)
+                        {
+                            var apiExplorerAttribute = controllerActionDescriptor
+                                ?.MethodInfo
+                                ?.GetCustomAttributes(typeof(SwaggerConfigAttribute), inherit: true)
+                                .FirstOrDefault();
+                            if (apiExplorerAttribute is SwaggerConfigAttribute apiExplorerSettings)
+                            {
+                                if (apiExplorerSettings.IgnoreApi)
+                                {
+                                    routeTemplate = string.Empty;
+                                }
+                            }
+                        }
+
                         if (!string.IsNullOrEmpty(routeTemplate))
                         {
                             actionDescriptor.AttributeRouteInfo = new AttributeRouteInfo
