@@ -153,6 +153,7 @@ The package is compatible with ASP.NET Core 3.X and ASP.NET Core 2.2 application
 
 |Generator Version|ASP.NET Core|Original dependency|
 |----------|----------|----------|
+|4.X.X|2.2, 3.X|5.6.3|
 |3.0.1.X|3.X|5.5.1|
 |2.2.1.X|2.2|5.5.1|
 
