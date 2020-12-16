@@ -183,7 +183,7 @@ Check the [CHANGELOG](https://github.com/chsakell/Swashbuckle.AspNetCore.Swagger
 ## Contribution ##
 
 * You are free to contribute by either improving the quality of the generator or opening an issue for a bug or feature request
-* Currently, master contains the implementation for ASP.NET Core 2.2 compatibility while [aspnetcore_3.0](https://github.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting/tree/aspnetcore_3.0) is the branch for ASP.NET Core 3.X
+* Master contains the implementations for both ASP.NET Core 2.2 and ASP.NET Core 3.X applications so any contribution should cover them as well
 * In case you open an issue, make sure you give enough details to reproduce it, for example if the generator creates a wrong swagger route _(returns 404)_ for a controller's action, then give the route configuration and the controller's action
 
 ## Donation ##
