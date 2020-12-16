@@ -6,6 +6,18 @@ For each release both ASP.NET Core 3.X and ASP.NET Core 2.X packages are referen
 
 ## [Released]
 
+## [4.0.2] - 2020-12-15
+
+### Changed
+
+- Add `SwaggerConfig` attribute and support for ignoring specific Controller Actions in swagger generation
+
+## [4.0.1] - 2020-12-15
+
+### Changed
+
+- Remove api explorer dependency from netcore 3.x builds
+
 ## [4.0.0] - 2020-12-15
 
 ### Changed
