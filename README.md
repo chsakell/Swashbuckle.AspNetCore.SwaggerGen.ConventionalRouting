@@ -151,7 +151,7 @@ As of version `4.X.X` the same package supports both ASP.NET Core 2.2 & ASP.NET 
 
 * Ignore conventional routes based on their template by defining `SwaggerRoutingOptions` during registration. The following example will __ignore__ all routes having template that starts with `api/`
 
-```
+```csharp
 services.AddSwaggerGenWithConventionalRoutes(options =>
 {
     options.IgnoreTemplateFunc = (template) => template.StartsWith("api/");
