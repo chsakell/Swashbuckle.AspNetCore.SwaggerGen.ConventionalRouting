@@ -6,9 +6,17 @@ For each release both ASP.NET Core 3.X and ASP.NET Core 2.X packages are referen
 
 ## [Released]
 
+## [4.0.3] - 2020-12-26
+
+### Added
+
+- Define `SwaggerRoutingConfiguration` options during registration to ignore conventional routes based on their template
+
+## [Released]
+
 ## [4.0.2] - 2020-12-15
 
-### Changed
+### Added
 
 - Add `SwaggerConfig` attribute and support for ignoring specific Controller Actions in swagger generation
 

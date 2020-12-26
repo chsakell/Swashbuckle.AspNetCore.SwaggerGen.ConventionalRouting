@@ -15,7 +15,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 {
     public class RouteTemplateResolver : IRouteTemplateResolver
     {
-        public string ResolveRouteTemplate(ActionDescriptor actionDescriptor)
+        public string ResolveRouteTemplate(ActionDescriptor actionDescriptor, SwaggerRoutingOptions options)
         {
             var routes = ConventionalRoutingSwaggerGen.ROUTES;
             var template = string.Empty;
@@ -26,6 +26,15 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                 {
                     if (route != null)
                     {
+                        if (options?.IgnoreTemplateFunc != null)
+                        {
+                            var ignoreRoute = options.IgnoreTemplateFunc(route.RawText);
+                            if (ignoreRoute)
+                            {
+                                continue;
+                            }
+                        }
+
                         var routeArea = GetRouteArea(route, out bool isAreaParameter);
                         var routeController = GetRouteController(route, out var isControllerParameter);
                         var routeAction = GetRouteAction(route, out bool isActionParameter);
@@ -428,7 +437,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 
     public interface IRouteTemplateResolver
     {
-        string ResolveRouteTemplate(ActionDescriptor actionDescriptor);
+        string ResolveRouteTemplate(ActionDescriptor actionDescriptor, SwaggerRoutingOptions options);
     }
 }
 

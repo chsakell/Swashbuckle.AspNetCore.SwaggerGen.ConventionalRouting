@@ -1,5 +1,6 @@
 ﻿#if (NETCOREAPP3_0 || NETCOREAPP3_1)
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Routing;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Models;
 
 namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
 {
@@ -15,7 +17,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
         public static List<RoutePattern> ROUTES;
 
         public static IServiceCollection AddSwaggerGenWithConventionalRoutes(
-            this IServiceCollection services)
+            this IServiceCollection services, Action<SwaggerRoutingOptions> options = null)
         {
             services.AddSingleton<IRouteTemplateResolver, RouteTemplateResolver>();
             services.AddSingleton<IConventionalRoutingSwaggerProvider, ConventionalRoutingSwaggerGenerator>();
@@ -26,6 +28,11 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             services
                 .AddSingleton<IConventionalRoutingActionDescriptorCollectionProvider,
                     ConventionalRoutingActionDescriptorCollectionProvider>();
+
+            if (options != null)
+            {
+                services.Configure(options);
+            }
 
             var swaggerDescriptionProviderDescriptor =
                 new ServiceDescriptor(

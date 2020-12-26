@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Models;
 
@@ -34,11 +35,13 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
         private IChangeToken _changeToken;
         private CancellationTokenSource _cancellationTokenSource;
         private int _version = 0;
+        private SwaggerRoutingOptions _swaggerRoutingOptions;
 
         public ConventionalRoutingActionDescriptorCollectionProvider(
             IEnumerable<IActionDescriptorProvider> actionDescriptorProviders,
             IEnumerable<IActionDescriptorChangeProvider> actionDescriptorChangeProviders,
-            IRouteTemplateResolver routeTemplateResolver)
+            IRouteTemplateResolver routeTemplateResolver,
+            IOptions<SwaggerRoutingOptions> swaggerRoutingOptions)
         {
             _routeTemplateResolver = routeTemplateResolver;
             _actionDescriptorProviders = actionDescriptorProviders
@@ -53,6 +56,11 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             ChangeToken.OnChange(
                 GetCompositeChangeToken,
                 UpdateCollection);
+
+            if (swaggerRoutingOptions != null)
+            {
+                _swaggerRoutingOptions = swaggerRoutingOptions.Value;
+            }
         }
 
         /// <summary>
@@ -170,7 +178,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                 new HttpMethodActionConstraint(new[] {httpMethod})
                             };
                         }
-                        var routeTemplate = _routeTemplateResolver.ResolveRouteTemplate(actionDescriptor);
+                        var routeTemplate = _routeTemplateResolver.ResolveRouteTemplate(actionDescriptor, _swaggerRoutingOptions);
 
                         if (actionDescriptor is ControllerActionDescriptor controllerActionDescriptor)
                         {

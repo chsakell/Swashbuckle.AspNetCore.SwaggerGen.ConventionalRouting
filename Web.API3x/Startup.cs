@@ -22,7 +22,10 @@ namespace Web.API
             services.AddControllers();
 
             services.AddSwaggerGen();
-            services.AddSwaggerGenWithConventionalRoutes();
+            services.AddSwaggerGenWithConventionalRoutes(options =>
+            {
+                options.IgnoreTemplateFunc = (template) => template.StartsWith("api/");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
