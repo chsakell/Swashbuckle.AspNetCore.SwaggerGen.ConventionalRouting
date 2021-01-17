@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swashbuckle.AspNetCore.Swag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.API2x", "Web.API\Web.API2x.csproj", "{B3C3C495-97F6-4B47-8066-948FCC0A0863}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.API3x", "Web.API3x\Web.API3x.csproj", "{A8ED42F1-CDF8-43AC-81B4-E4F4ECAED0F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.API_3x_5x", "Web.API3x\Web.API_3x_5x.csproj", "{A8ED42F1-CDF8-43AC-81B4-E4F4ECAED0F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

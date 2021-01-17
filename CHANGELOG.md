@@ -6,6 +6,14 @@ For each release both ASP.NET Core 3.X and ASP.NET Core 2.X packages are referen
 
 ## [Released]
 
+## [4.1.0] - 2021-01-17
+
+### Added
+
+- Added support for __.NET 5.0__ framework
+
+## [Released]
+
 ## [4.0.3] - 2020-12-26
 
 ### Added

@@ -6,12 +6,12 @@ NuGet: [Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting](https://www.nuget
 
 # Getting Started #
 
-As of version `4.X.X` the same package supports both ASP.NET Core 2.2 & ASP.NET Core 3.X applications
+The package supports ASP.NET Core 2.2, 3.X & 5.0 applications
 
 > Depending on your application's framework, follow the corresponding guide
 <br/>
 
-## ASP.NET Core 3.X applications
+## ASP.NET Core 3.X, 5.0 applications
 
 1. Install the latest standard Nuget package into your ASP.NET Core application.
 
@@ -167,7 +167,8 @@ The package is compatible with ASP.NET Core 3.X and ASP.NET Core 2.2 application
 
 |Generator Version|ASP.NET Core|Original dependency|
 |----------|----------|----------|
-|4.X.X|2.2, 3.X|5.6.3|
+|4.1.0|2.2, 3.X, 5.0|5.6.3|
+|4.0.X|2.2, 3.X|5.6.3|
 |3.0.1.X|3.X|5.5.1|
 |2.2.1.X|2.2|5.5.1|
 
