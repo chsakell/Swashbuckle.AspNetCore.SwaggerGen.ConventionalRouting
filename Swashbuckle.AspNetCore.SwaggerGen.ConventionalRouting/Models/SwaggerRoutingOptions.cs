@@ -7,5 +7,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting.Models
     public class SwaggerRoutingOptions
     {
         public Func<string, bool> IgnoreTemplateFunc { get; set; }
+        
+        public bool SkipDefaults { get; set; }
     }
 }

@@ -19,11 +19,17 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
         {
             var routes = ConventionalRoutingSwaggerGen.ROUTES;
             var template = string.Empty;
+            var templateDefaults = new Dictionary<string,string>();
 
             if (routes != null)
             {
                 foreach (var route in routes)
                 {
+                    templateDefaults.Clear();
+                    var isDefaultArea = false;
+                    var isDefaultController = false;
+                    var isDefaultAction = false;
+
                     if (route != null)
                     {
                         if (options?.IgnoreTemplateFunc != null)
@@ -97,6 +103,19 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                         }
                                     }
 
+                                    if (!string.IsNullOrEmpty(actionMatchConfig.Area) && route.Defaults != null &&
+                                        route.Defaults.TryGetValue("area", out var defaultArea) &&
+                                        !string.IsNullOrEmpty(defaultArea?.ToString()))
+                                    {
+                                        isDefaultArea = actionMatchConfig.Area
+                                            .Equals(defaultArea.ToString(),
+                                                StringComparison.InvariantCultureIgnoreCase);
+                                        if (isDefaultArea)
+                                        {
+                                            templateDefaults.Add("area", actionMatchConfig.Area);
+                                        }
+                                    }
+
                                     template += $"{actionMatchConfig.Area}/";
                                 }
                                 else if (firstPartName.Equals("controller"))
@@ -113,6 +132,22 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                         }
                                     }
 
+                                    if(route.Defaults != null && 
+                                       route.Defaults.TryGetValue("controller",out var defaultController) &&
+                                       !string.IsNullOrEmpty(defaultController?.ToString()))
+                                    {
+                                        var configController = WithNoSuffix(actionMatchConfig.Controller, "Controller")
+                                            .ToLower();
+                                        isDefaultController = configController.Equals(defaultController.ToString(),
+                                            StringComparison.InvariantCultureIgnoreCase);
+
+                                        if (isDefaultController)
+                                        {
+                                            templateDefaults.Add("controller",
+                                                $"{WithNoSuffix(actionMatchConfig.Controller, "Controller")}");
+                                        }
+                                    }
+
                                     template += $"{WithNoSuffix(actionMatchConfig.Controller, "Controller")}/";
                                 }
                                 else if (firstPartName.Equals("action"))
@@ -126,6 +161,19 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                         {
                                             template = null;
                                             break;
+                                        }
+                                    }
+
+                                    if (route.Defaults != null &&
+                                        route.Defaults.TryGetValue("action", out var defaultAction) && 
+                                        !string.IsNullOrEmpty(defaultAction?.ToString()))
+                                    {
+                                        isDefaultAction = actionMatchConfig.Action
+                                            .Equals(defaultAction.ToString(),
+                                                StringComparison.InvariantCultureIgnoreCase);
+                                        if (isDefaultAction)
+                                        {
+                                            templateDefaults.Add("action", actionMatchConfig.Action);
                                         }
                                     }
 
@@ -151,6 +199,11 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                                         {
                                             template = null;
                                             break;
+                                        }
+
+                                        if (parameterInfo?.BindingInfo?.BindingSource.Id == "Path")
+                                        {
+                                            templateDefaults.Clear();
                                         }
                                     }
 
@@ -217,8 +270,39 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                 template = template.TrimEnd('/');
             }
 
+            if (!string.IsNullOrEmpty(template) && options.SkipDefaults && templateDefaults.Any())
+            {
+                template = SkipDefaultsFromTemplate(templateDefaults, template);
+            }
+
             return template;
 
+        }
+
+        private string SkipDefaultsFromTemplate(Dictionary<string, string> defaults, string template)
+        {
+            if (defaults.TryGetValue("action", out var defaultAction))
+            {
+                template = template.Replace(defaultAction, string.Empty, 
+                    StringComparison.InvariantCultureIgnoreCase)
+                    .Replace("//", "/");
+                
+                if(defaults.TryGetValue("controller", out var defaultController))
+                {
+                    template = template.Replace(defaultController, string.Empty, 
+                        StringComparison.InvariantCultureIgnoreCase)
+                        .Replace("//", "/");
+
+                    if (defaults.TryGetValue("area", out var defaultArea))
+                    {
+                        template = template.Replace(defaultArea, string.Empty,
+                            StringComparison.CurrentCultureIgnoreCase)
+                            .Replace("//", "/");
+                    }
+                };
+            }
+
+            return template;
         }
 
         private string GetRoutePatternPartPropertyValue(RoutePatternPart part, out bool isOptional)

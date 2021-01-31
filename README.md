@@ -32,7 +32,11 @@ The package supports ASP.NET Core 2.2, 3.X & 5.0 applications
     services.AddSwaggerGen();
     
     // this will handle all conventional based routes
-    services.AddSwaggerGenWithConventionalRoutes();
+    services.AddSwaggerGenWithConventionalRoutes(options =>
+    {
+        options.IgnoreTemplateFunc = (template) => template.StartsWith("api/");
+        options.SkipDefaults = true;
+    });
     ```
     
  3. In the `Configure` method of `Startup.cs`, add `Swagger` and `SwaggerUI` middlewares and after registering all your conventional routes, pass the `endpoints` as an argument to the Conventional Routing generator.
@@ -106,7 +110,11 @@ The package supports ASP.NET Core 2.2, 3.X & 5.0 applications
     services.AddSwaggerGen();
     
     // this will handle all conventional based routes
-    services.AddSwaggerGenWithConventionalRoutes();
+    services.AddSwaggerGenWithConventionalRoutes(options =>
+    {
+        options.IgnoreTemplateFunc = (template) => template.StartsWith("api/");
+        options.SkipDefaults = true;
+    });
     ```
     
  3. In the `Configure` method of `Startup.cs`, add `Swagger` and `SwaggerUI` middlewares and after registering all your conventional routes, pass them as an argument to the Conventional Routing generator.
@@ -149,6 +157,18 @@ The package supports ASP.NET Core 2.2, 3.X & 5.0 applications
 
 ## Configuration ##
 
+* Skip default _area_, _controller_ or _action_ values by setting `SwaggerRoutingOptions.SkipDefaults` = `true`. The resolver will skip the default values when possible.
+```csharp
+services.AddSwaggerGenWithConventionalRoutes(options =>
+{
+    options.SkipDefaults = true;
+});
+```
+__Example__: For a `HomeController` having an `Index` action, the template will __/api/messages/__ for the following defined route: 
+```
+endpoints.MapControllerRoute("area-default", "api/messages/{controller=Home}/{action=Index}/{id?}");
+```
+
 * Ignore conventional routes based on their template by defining `SwaggerRoutingOptions` during registration. The following example will __ignore__ all routes having template that starts with `api/`
 
 ```csharp
@@ -167,7 +187,7 @@ The package is compatible with ASP.NET Core 3.X and ASP.NET Core 2.2 application
 
 |Generator Version|ASP.NET Core|Original dependency|
 |----------|----------|----------|
-|4.1.0|2.2, 3.X, 5.0|5.6.3|
+|4.1.0, 4.2.1|2.2, 3.X, 5.0|5.6.3|
 |4.0.X|2.2, 3.X|5.6.3|
 |3.0.1.X|3.X|5.5.1|
 |2.2.1.X|2.2|5.5.1|

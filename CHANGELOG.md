@@ -6,6 +6,20 @@ For each release both ASP.NET Core 3.X and ASP.NET Core 2.X packages are referen
 
 ## [Released]
 
+## [4.2.0] - 2021-01-31
+
+### Added
+
+- Add option to __skip default__ area, controller and action values when possible.
+```
+services.AddSwaggerGenWithConventionalRoutes(options =>
+{
+    options.SkipDefaults = true;
+});
+```
+
+## [Released]
+
 ## [4.1.0] - 2021-01-17
 
 ### Added

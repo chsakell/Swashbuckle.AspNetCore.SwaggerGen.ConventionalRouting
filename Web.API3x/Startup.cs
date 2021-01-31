@@ -25,6 +25,7 @@ namespace Web.API
             services.AddSwaggerGenWithConventionalRoutes(options =>
             {
                 options.IgnoreTemplateFunc = (template) => template.StartsWith("api/");
+                options.SkipDefaults = true;
             });
         }
 
@@ -140,7 +141,7 @@ namespace Web.API
 
 
                 endpoints.MapControllerRoute("area-default", "api/{area}/{controller=Home}/{action=Index}/{id?}");
-                
+
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 
                 ConventionalRoutingSwaggerGen.UseRoutes(endpoints);

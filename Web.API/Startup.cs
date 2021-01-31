@@ -27,6 +27,7 @@ namespace Web.API
             services.AddSwaggerGen();
             services.AddSwaggerGenWithConventionalRoutes(options =>
             {
+                options.SkipDefaults = true;
                 options.IgnoreTemplateFunc = (template) =>
                 {
                     return template.StartsWith("api/");
