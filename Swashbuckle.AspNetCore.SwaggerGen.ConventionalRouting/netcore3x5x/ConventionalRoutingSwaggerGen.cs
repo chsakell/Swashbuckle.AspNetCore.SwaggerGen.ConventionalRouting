@@ -45,6 +45,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
             return services;
         }
 
+        // .UseEndpoints routing setup
         public static void UseRoutes(IEndpointRouteBuilder endpointRouteBuilder)
         {
             ROUTES = new List<RoutePattern>();
@@ -60,6 +61,24 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting
                   }
                 }
                 
+            }
+        }
+
+        // .UseMvc routing setup
+        public static void UseRoutes(IList<IRouter> routes)
+        {
+            ROUTES = new List<RoutePattern>();
+            foreach (var buildRoute in routes)
+            {
+                if (buildRoute is Route route)
+                {
+                    var routePattern = RoutePatternFactory.Parse(route.RouteTemplate);
+
+                    if (routePattern != null)
+                    {
+                        ROUTES.Add(routePattern);
+                    }
+                }
             }
         }
     }
