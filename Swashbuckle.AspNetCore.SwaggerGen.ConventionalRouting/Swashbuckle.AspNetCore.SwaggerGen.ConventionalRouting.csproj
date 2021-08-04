@@ -15,7 +15,7 @@
     <PackageTags>swagger, documentation, discovery, help, webapi, aspnet, aspnetcore</PackageTags>
     <Product />
     <Description>Swagger Generator extension for ASP.NET Core APIs built using conventional routing</Description>
-    <Version>4.2.0</Version>
+    <Version>4.2.1</Version>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2' ">

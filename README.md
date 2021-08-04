@@ -87,6 +87,34 @@ The package supports ASP.NET Core 2.2, 3.X & 5.0 applications
        ConventionalRoutingSwaggerGen.UseRoutes(endpoints);
      });
     ```
+> In case you are not using endpoint routing, meaning you use the `.UseMvc` setup, configure the generator as follow:
+
+```csharp
+app.UseMvc(router =>
+{
+   router.MapRoute("pet-delete", "/mypet/{petId}", defaults: new
+   {
+     controller = "MyPetApi",
+     action = "DeletePet"
+   });
+
+   router.MapRoute("pet-getbyid", "/mypet/{petId}", defaults: new
+   {
+      controller = "MyPetApi",
+      action = "GetPetById"
+  });
+  
+  // routes with common or custom constraints will work
+  router.MapRoute(name: "hello-world-regex",
+       template: "message/{controller:regex(^H.*)=HelloWorld}/{action:regex(^Index$|^About$)=Index}/{message:alpha?}");
+       
+  // more routes..
+  
+  // Pass the conventional routes to the generator
+  ConventionalRoutingSwaggerGen.UseRoutes(router.Routes);
+ });
+ ```
+
 <br/> 
 
 ## ASP.NET Core 2.2 applications
