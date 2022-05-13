@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30011.22
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59DFD87D-EBBF-442A-83DC-A98DC2AF3041}"
 EndProject
@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swashbuckle.AspNetCore.Swag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.API2x", "Web.API\Web.API2x.csproj", "{B3C3C495-97F6-4B47-8066-948FCC0A0863}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.API_3x_5x", "Web.API3x\Web.API_3x_5x.csproj", "{A8ED42F1-CDF8-43AC-81B4-E4F4ECAED0F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.API_3x_5x_6x", "Web.API3x\Web.API_3x_5x_6x.csproj", "{A8ED42F1-CDF8-43AC-81B4-E4F4ECAED0F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
