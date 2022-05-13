@@ -6,12 +6,12 @@ NuGet: [Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting](https://www.nuget
 
 # Getting Started #
 
-The package supports ASP.NET Core 2.2, 3.X & 5.0 applications
+The package supports ASP.NET Core 2.2, 3.X, 5.0 & 6.0 applications
 
 > Depending on your application's framework, follow the corresponding guide
 <br/>
 
-## ASP.NET Core 3.X, 5.0 applications
+## ASP.NET Core 3.X, .NET 5.0, .NET 6.0 applications
 
 1. Install the latest standard Nuget package into your ASP.NET Core application.
 
@@ -215,6 +215,7 @@ The package is compatible with ASP.NET Core 3.X and ASP.NET Core 2.2 application
 
 |Generator Version|ASP.NET Core|Original dependency|
 |----------|----------|----------|
+|4.3.0|2.2, 3.X, 5.0, 6.0|6.3.1|
 |4.1.0, 4.2.1|2.2, 3.X, 5.0|5.6.3|
 |4.0.X|2.2, 3.X|5.6.3|
 |3.0.1.X|3.X|5.5.1|
@@ -234,11 +235,6 @@ The package is compatible with ASP.NET Core 3.X and ASP.NET Core 2.2 application
 |Delete, Remove|DELETE|
 |all others|GET|
 
-## Roadmap ##
-
-* Add configuration to change the generator's behavior
-* Add unit tests
-
 ## Releases changes
 
 Check the [CHANGELOG](https://github.com/chsakell/Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting/blob/master/CHANGELOG.md) for new releases and breaking changes between versions
@@ -246,7 +242,7 @@ Check the [CHANGELOG](https://github.com/chsakell/Swashbuckle.AspNetCore.Swagger
 ## Contribution ##
 
 * You are free to contribute by either improving the quality of the generator or opening an issue for a bug or feature request
-* Master contains the implementations for both ASP.NET Core 2.2 and ASP.NET Core 3.X applications so any contribution should cover them as well
+* Master contains the implementations for all target frameworks so any contribution should cover them as well
 * In case you open an issue, make sure you give enough details to reproduce it, for example if the generator creates a wrong swagger route _(returns 404)_ for a controller's action, then give the route configuration and the controller's action
 
 ## Donation ##
