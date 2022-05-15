@@ -6,7 +6,7 @@ NuGet: [Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting](https://www.nuget
 
 # Getting Started #
 
-The package supports ASP.NET Core 2.2, 3.X, 5.0 & 6.0 applications
+The package supports ASP.NET Core 2.2, 3.X, .NET 5.0 & .NET 6.0 applications
 
 > Depending on your application's framework, follow the corresponding guide
 <br/>
